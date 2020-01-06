@@ -1,5 +1,6 @@
 class Battery:
-    def init(self, x, y, capacity):
+    def __init__(self, battery_id, x, y, capacity):
+        self.id = battery_id
         self.x = x
         self.y = y
         self.capacity = capacity
@@ -14,3 +15,6 @@ class Battery:
     def remove_house(self, house):
         self.houses.remove(house)
         self.capacity += house.usage
+
+    def __str__(self):
+        return f"{self.id}"
