@@ -33,11 +33,11 @@ def create_batteries(district_number):
 
     # Create an object for each house
     for battery_id, row in enumerate(batteries_data, 1):
-        row = row[0].split(", ")
-        x = row[0].replace("[", "")
-        y = row[1].replace("]", "")
+        coordinates = eval(row[0])
         batteries[battery_id] = Battery(
-            battery_id, x, y)
+            battery_id, coordinates[0], coordinates[1], eval(row[1]))
+
+    print(batteries[1])
 
     return batteries
 

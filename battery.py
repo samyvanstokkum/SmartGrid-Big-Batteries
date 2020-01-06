@@ -1,12 +1,10 @@
-CAPACITY = 1507.0
-
 
 class Battery:
-    def __init__(self, battery_id, x, y):
+    def __init__(self, battery_id, x, y, capacity):
         self.id = battery_id
         self.x = x
         self.y = y
-        self.capacity = CAPACITY
+        self.capacity = capacity
         self.houses = []
 
     # Add a house to the battery
