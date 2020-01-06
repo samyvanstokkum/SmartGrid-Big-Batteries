@@ -20,6 +20,3 @@ district()
 
 # retrieve batteries
 battery()
-
-# create matrix
-matrix_maker()
