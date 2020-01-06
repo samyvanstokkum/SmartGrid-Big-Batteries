@@ -8,6 +8,7 @@ def get_info_district1():
     district1 = {}
     housenumber = 1
     for row in district1_data:
+
         row[0] = int(row[0])
         row[1] = int(row[1])
         row[2] = float(row[2])
