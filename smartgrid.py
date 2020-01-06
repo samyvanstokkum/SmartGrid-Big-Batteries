@@ -1,22 +1,12 @@
 import csv
-import House from house
+from house import House
 
-# retrieve district
-def get_info_district1():
+f = open('Houses&Batteries/disctrict1_battery.csv')
 
-    f = open('wijk1_huizen.csv')
+district1_data = csv.reader(f)
+next(district1_data)
+district1 = []
 
-    district1_data = csv.reader(f)
-    next(district1_data)
-    district1 = []
-
-    for row in district1_data:
-        district1.append(House(int(row[0]), int(row[1], float(row[2]))))
-
-    # comment blabla
-    print(district1)
-
-district()
-
-# retrieve batteries
-battery()
+for number, row in enumerate(district1_data, 1):
+    print(row)
+    print(number)
