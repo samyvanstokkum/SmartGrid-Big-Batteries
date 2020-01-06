@@ -1,5 +1,6 @@
 import csv
 
+
 def get_info_district1():
     f = open('wijk1_huizen.csv')
 
