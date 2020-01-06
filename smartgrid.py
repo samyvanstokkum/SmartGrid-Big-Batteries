@@ -44,4 +44,3 @@ def create_batteries(district_number):
 
 if __name__ == "__main__":
     main()
-    # hello
