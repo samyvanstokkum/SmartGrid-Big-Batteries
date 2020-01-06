@@ -7,7 +7,6 @@ def main():
     # district_number = input("What district?:")
     district = create_district(1)
     batteries = create_batteries(1)
-    print(batteries)
 
 
 def create_district(district_number):
@@ -34,9 +33,11 @@ def create_batteries(district_number):
 
     # Create an object for each house
     for battery_id, row in enumerate(batteries_data, 1):
-        # batteries[battery_id] = Battery(
-        #     battery_id, row[0], row[1])
-        print(row[0].split(","))
+        row = row[0].split(", ")
+        x = row[0].replace("[", "")
+        y = row[1].replace("]", "")
+        batteries[battery_id] = Battery(
+            battery_id, x, y)
 
     return batteries
 
