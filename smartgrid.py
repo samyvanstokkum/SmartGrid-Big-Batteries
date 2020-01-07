@@ -7,7 +7,7 @@ from distance import get_distance
 
 def main():
     # set to 1 if you want to print the houses and batteries
-    yes_plot = True
+    yes_plot = False
 
     # district_number = input("What district?:")
     district, x_batteries, y_batteries = create_district(1)
