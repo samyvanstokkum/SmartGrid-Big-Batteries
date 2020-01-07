@@ -10,7 +10,8 @@ def main():
 
 
 def create_district(district_number):
-    # Retrieve all houses from csv
+    """Retrieve all houses from csv and create district with house objects."""
+
     f = open(f'Houses&Batteries/district{district_number}_houses.csv')
     district_data = csv.reader(f)
     next(district_data)
@@ -25,7 +26,8 @@ def create_district(district_number):
 
 
 def create_batteries(district_number):
-    # Retrieve all houses from csv
+    """Retrieve batteries from csv and create battery objects."""
+    
     f = open(f'Houses&Batteries/district{district_number}_batteries.csv')
     batteries_data = csv.reader(f)
     next(batteries_data)
