@@ -13,9 +13,21 @@ def main():
     district, x_batteries, y_batteries = create_district(1)
     batteries, x_houses, y_houses = create_batteries(1)
     matrix = make_distance_matrix(district, batteries)
-    print(matrix)
+    # print(matrix)
 
-    # print batteries and houses
+    # append house to battery
+    cable_distance, battery_id, house_id = 0, 0, 1
+    for battery in batteries.values():
+        while battery.capacity - district[house_id].usage >= 0:
+            battery.add_house(district[house_id])
+
+            #
+            cable_distance += matrix[house_id-1][battery_id]
+            house_id += 1
+        battery_id += 1
+    print(cable_distance*9 + 5*5000)
+
+  # print batteries and houses
     if yes_plot:
         plt.figure()
 
@@ -30,12 +42,7 @@ def main():
 
     # just to check if can add/remove houses
     batteries[1].add_house(district[1])
-    print(batteries[1].houses)
-    print(batteries[1].capacity)
-
     batteries[1].remove_house(district[1])
-    print(batteries[1].houses)
-    print(batteries[1].capacity)
 
 
 def create_district(district_number):
@@ -62,7 +69,7 @@ def create_district(district_number):
 
 def create_batteries(district_number):
     """Retrieve batteries from csv and create battery objects."""
-    
+
     f = open(f'Houses&Batteries/district{district_number}_batteries.csv')
     batteries_data = csv.reader(f)
     next(batteries_data)
@@ -70,7 +77,7 @@ def create_batteries(district_number):
     x_batteries = []
     y_batteries = []
 
-    # Create an object for each house
+    # Create an object for each battery
     for battery_id, row in enumerate(batteries_data, 1):
         coordinates = eval(row[0])
         batteries[battery_id] = Battery(
@@ -80,9 +87,8 @@ def create_batteries(district_number):
         x_batteries.append(coordinates[0])
         y_batteries.append(coordinates[1])
 
-    print(batteries[1])
-
     return batteries, x_batteries, y_batteries
+
 
 def make_distance_matrix(district, batteries):
     distance_matrix = []
@@ -93,7 +99,6 @@ def make_distance_matrix(district, batteries):
         distance_matrix.append(row)
 
     return distance_matrix
-
 
 
 if __name__ == "__main__":
