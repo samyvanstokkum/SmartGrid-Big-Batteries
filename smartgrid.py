@@ -2,18 +2,21 @@ import csv
 from house import House
 from battery import Battery
 import matplotlib.pyplot as plt
+from distance import get_distance
 
 
 def main():
     # set to 1 if you want to print the houses and batteries
-    print = 1
+    yes_plot = True
 
     # district_number = input("What district?:")
     district, x_batteries, y_batteries = create_district(1)
     batteries, x_houses, y_houses = create_batteries(1)
+    matrix = make_distance_matrix(district, batteries)
+    print(matrix)
 
     # print batteries and houses
-    if print == 1:
+    if yes_plot:
         plt.figure()
 
         # plot batteries in red and houses in blue
@@ -80,6 +83,17 @@ def create_batteries(district_number):
     print(batteries[1])
 
     return batteries, x_batteries, y_batteries
+
+def make_distance_matrix(district, batteries):
+    distance_matrix = []
+    for house in district.values():
+        row = []
+        for battery in batteries.values():
+            row.append(get_distance(house.x, house.y, battery.x, battery.y))
+        distance_matrix.append(row)
+
+    return distance_matrix
+
 
 
 if __name__ == "__main__":
