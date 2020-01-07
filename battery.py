@@ -17,5 +17,11 @@ class Battery:
         self.houses.remove(house)
         self.capacity += house.usage
 
+    def calculate_route(self, house):
+        list_x = [house.x, house.x, self.x]
+        list_y = [house.y, self.y, self.y]
+        route = [list_x, list_y]
+        return route
+
     def __str__(self):
         return f"{self.id}"
