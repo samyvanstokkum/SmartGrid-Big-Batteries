@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class Route:
     def __init__(self):
         self.routes = []
@@ -16,15 +19,16 @@ class Route:
         return sorted_list
 
     def calculate_routes(self, district, batteries, houses_desc):
-        for house in houses_desc:
+        for h in houses_desc:
+            house = h[0]
+            distances_list = h[1]
+            last_house = houses_desc[-1][0]
+
             # add house to battery
             while True:
-
                 # select the route with the lowest possible distance from house to battery
-                battery_index = house[1].index(min(house[1]))
+                battery_index = distances_list.index(np.nanmin(distances_list))
                 battery = batteries[battery_index]
-                distances_list = house[1]
-                house = house[0]
 
                 # check if capacity fits the usage
                 if battery.capacity - house.usage >= 0:
@@ -35,11 +39,9 @@ class Route:
                     self.routes.append([x, y])
                     break
                 else:
-                    print(distances_list)
-                    print(battery_index)
-                    distances_list[battery_index] = None
-
-        print("hello")
+                    distances_list[battery_index] = np.nan
+                if house == last_house:
+                    break
 
     def delete_duplicates():
         # TODO Delete coordinates that are duplicated if a line is shared with another battery line, change the color to a uniform color like black.
