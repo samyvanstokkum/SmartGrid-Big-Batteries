@@ -23,16 +23,16 @@ def create_grid(district, x_houses, y_houses, batteries, routes):
         plt.legend(loc='upper center', ncol=10, fontsize=8)
 
         # append house to battery
-        # cable_distance, battery_id, house_id = 0, 0, 1
-        # for battery in batteries:
-        #     while battery.capacity - district[house_id].usage >= 0:
-        #         battery.add_house(district[house_id])
-        #         route = battery.calculate_route(district[house_id])
-        #         plt.plot(route[0], route[1], colors[battery_id])
+        cable_distance, battery_id, house_id = 0, 0, 1
+        for battery in batteries:
+            while battery.capacity - district[house_id].usage >= 0:
+                battery.add_house(district[house_id])
+                route = battery.calculate_route(district[house_id])
+                plt.plot(route[0], route[1], colors[battery_id])
 
-        #         cable_distance += matrix[house_id-1][battery_id]
-        #         house_id += 1
-        #     battery_id += 1
-        # print(cable_distance*9 + 5*5000)
+                cable_distance += matrix[house_id-1][battery_id]
+                house_id += 1
+            battery_id += 1
+        print(cable_distance*9 + 5*5000)
 
         plt.show()

@@ -3,7 +3,7 @@ import numpy as np
 
 class Route:
     def __init__(self):
-        self.routes = []
+        self.routes = {}
         self.cable = 0
 
     def distance_descending(self, district, batteries):
@@ -19,6 +19,8 @@ class Route:
         return sorted_list
 
     def calculate_routes(self, district, batteries, houses_desc):
+        for battery in batteries:
+            self.routes[battery] = []
         for h in houses_desc:
             house = h[0]
             distances_list = h[1]
@@ -36,7 +38,9 @@ class Route:
                     # x and y coordiates from house to battery
                     x = [house.x, house.x, battery.x]
                     y = [house.y, battery.y, battery.y]
-                    self.routes.append([x, y])
+
+                    self.routes[battery].append([x, y])
+
                     break
                 else:
                     distances_list[battery_index] = np.nan
@@ -53,4 +57,4 @@ class Route:
     def import_routes(self, district, batteries):
         descending_distances = self.distance_descending(district, batteries)
         self.calculate_routes(district, batteries, descending_distances)
-        return self.routes
+        print(self.routes)
