@@ -32,18 +32,23 @@ class Route:
         return house_to_batteries_distances
 
     def set_routes(self, batteries, house_to_batteries_distances):
+        kopietje = copy.deepcopy(house_to_batteries_distances)
+        print(kopietje)
         for battery in batteries:
             self.routes[battery] = []
             # last_house = list(house_to_batteries_distances.keys())[-1]
             # print(last_house)
         for house, distances in house_to_batteries_distances.items():
-
             # add house to battery
+            index_possibilities = [0, 1, 2, 3, 4]
+
             while True:
                 # select the route with the smallest distance from house to battery
+                if not index_possibilities:
+                    pass
+                battery_index = distances.index(min(distances))
+                index_possibilities.remove(battery_index)
                 
-                battery_index = distances.index(np.nanmin(distances))
-                battery = batteries[battery_index]
 
                 # check if capacity fits the usage
                 if battery.capacity - house.usage >= 0:
@@ -56,9 +61,8 @@ class Route:
                     
                     break
                 else:
-                    distances[battery_index] = np.nan
-                    if all(np.isnan(distances)):
-                        pass
+                    # update feasible battery distances
+                    distances = [distance for i, distance in enumerate(distances) if i not in index_possibilities]
 
 
     def delete_duplicates():

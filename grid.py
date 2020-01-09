@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 
 
 def create_grid(district, x_houses, y_houses, batteries, routes):
-
+    print(routes)
     # set to True to print the houses and batteries
-    yes_plot = False
+    yes_plot = True
 
     # print batteries and houses
     if yes_plot:
@@ -23,16 +23,15 @@ def create_grid(district, x_houses, y_houses, batteries, routes):
         plt.legend(loc='upper center', ncol=10, fontsize=8)
 
         # append house to battery
-        cable_distance, battery_id, house_id = 0, 0, 1
-        for battery in batteries:
-            while battery.capacity - district[house_id].usage >= 0:
-                battery.add_house(district[house_id])
-                route = battery.calculate_route(district[house_id])
-                plt.plot(route[0], route[1], colors[battery_id])
+        print(routes)
+        cable_distance = 0
 
-                cable_distance += matrix[house_id-1][battery_id]
-                house_id += 1
-            battery_id += 1
-        print(cable_distance*9 + 5*5000)
+        for battery in batteries:
+            for coordinates_x, coordinates_y in routes[battery]:
+                plt.plot(coordinates_x, coordinates_y, colors[battery.id -1])
+                cable_distance += abs(coordinates_x[0]-coordinates_x[2]) + abs(coordinates_y[0] - coordinates_y[2])
+        
+        print(cable_distance)
+        print(cable_distance*9)
 
         plt.show()

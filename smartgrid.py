@@ -9,18 +9,18 @@ from grid import create_grid
 
 
 def main():
-    # contains the house objects
+    # load houses from district1 and get house coordinates
     district, x_houses, y_houses = import_district(1)
     # print(district)
 
-    # contains the battery objects
+    # load batteries from district1 and get battery coordinates
     batteries = import_batteries(1)
     # print(batteries)
 
     # calculates and stores the routes
     r = Route()
     routes = r.import_routes(district, batteries)
-
+    print(routes)
     # plots the district and batteries in a grid
     create_grid(district, x_houses, y_houses, batteries, routes)
 

@@ -1,61 +1,65 @@
-from distance import get_distance
-import csv
-from house import House
-from battery import Battery
+import numpy as np
 
 
-def main():
-    # district_number = input("What district?:")
-    district = create_district(1)
-    batteries = create_batteries(1)
-    matrix = make_distance_matrix(district, batteries)
-    print(matrix)
+class Route:
+    def __init__(self):
+        self.routes = {}
+        self.cable = 0
 
+    def get_house_to_batteries_distances(self, district, batteries):
+        """Create dictionary containing distances to each battery for each house.
+        Order such that houses with greatest cummulative distance are first. 
+        """
+        house_to_batteries_distances = {}
+        for house in district:
+            house_to_batteries_distances[house] = []
 
-def create_district(district_number):
-    """Retrieve all houses from csv and create district with house objects."""
+            for battery in batteries:
+                house_to_batteries_distances[house].append(
+                    abs(battery.x-house.x) + abs(battery.y - house.y)
+                )
+        house_to_batteries_distances = {house: distance for house, distance in 
+            sorted(all_distances.items(), key=lambda item: sum(item[1]), reverse=True)
+            }
+        return house_to_batteries_distances
 
-    f = open(f'Houses&Batteries/district{district_number}_houses.csv')
-    district_data = csv.reader(f)
-    next(district_data)
-    district = {}
+    def calculate_routes(self, district, batteries, houses_desc):
+        for battery in batteries:
+            self.routes[battery] = []
+        for h in houses_desc:
+            house = h[0]
+            distances_list = h[1]
+            last_house = houses_desc[-1][0]
 
-    # Create an object for each house
-    for house_id, row in enumerate(district_data, 1):
-        district[house_id] = House(house_id, int(
-            row[0]), int(row[1]), float(row[2]))
+            # add house to battery
+            while True:
+                # select the route with the lowest possible distance from house to battery
+                battery_index = distances_list.index(np.nanmin(distances_list))
+                battery = batteries[battery_index]
 
-    return district
+                # check if capacity fits the usage
+                if battery.capacity - house.usage >= 0:
+                    battery.add_house(house)
+                    # x and y coordiates from house to battery
+                    x = [house.x, house.x, battery.x]
+                    y = [house.y, battery.y, battery.y]
 
+                    self.routes[battery].append([x, y])
 
-def create_batteries(district_number):
-    """Retrieve batteries from csv and create battery objects."""
+                    break
+                else:
+                    distances_list[battery_index] = np.nan
+                if house == last_house:
+                    break
 
-    f = open(f'Houses&Batteries/district{district_number}_batteries.csv')
-    batteries_data = csv.reader(f)
-    next(batteries_data)
-    batteries = {}
+    def delete_duplicates():
+        # TODO Delete coordinates that are duplicated if a line is shared with another battery line, change the color to a uniform color like black.
+        pass
 
-    # Create an object for each house
-    for battery_id, row in enumerate(batteries_data, 1):
-        coordinates = eval(row[0])
-        batteries[battery_id] = Battery(
-            battery_id, coordinates[0], coordinates[1], eval(row[1]))
+    def cable_costs(self):
+        pass
 
-    print(batteries[1])
-
-    return batteries
-
-def make_distance_matrix(district, batteries):
-    distance_matrix = []
-    for house in district.values():
-        row = []
-        for battery in batteries.values():
-            row.append(get_distance(house.x, house.y, battery.x, battery.y))
-        distance_matrix.append(row)
-
-    return distance_matrix
-
-if __name__ == "__main__":
-    main()
-
+    def import_routes(self, district, batteries):
+        descending_distances = self.distance_descending(district, batteries)
+        self.calculate_routes(district, batteries, descending_distances)
+        print(self.routes)
