@@ -32,18 +32,48 @@ class Route:
         return house_to_batteries_distances
 
     def set_routes(self, batteries, house_to_batteries_distances):
+        # for battery in batteries:
+        #     self.routes[battery] = []
+        #     # last_house = list(house_to_batteries_distances.keys())[-1]
+        #     # print(last_house)
+        # for house, distances in house_to_batteries_distances.items():
+
+        #     # add house to battery
+        #     while True:
+        #         # select the route with the smallest distance from house to battery
+                
+        #         battery_index = distances.index(np.nanmin(distances))
+        #         battery = batteries[battery_index]
+
+        #         # check if capacity fits the usage
+        #         if battery.capacity - house.usage >= 0:
+        #             battery.add_house(house) 
+        #             # x and y coordinates from house to battery
+        #             x = [house.x, house.x, battery.x]
+        #             y = [house.y, battery.y, battery.y]
+
+        #             self.routes[battery].append((x, y))
+                    
+        #             break
+        #         else:
+        #             distances[battery_index] = np.nan
+        #             if all(np.isnan(distances)):
+        #                 pass
         for battery in batteries:
             self.routes[battery] = []
             # last_house = list(house_to_batteries_distances.keys())[-1]
             # print(last_house)
         for house, distances in house_to_batteries_distances.items():
 
-            # add house to battery
+            distances_dic = {}
+            for battery_nr, distance in enumerate(distances, 1):
+                distances_dic[battery_nr] = distance 
+    
             while True:
                 # select the route with the smallest distance from house to battery
-                
-                battery_index = distances.index(np.nanmin(distances))
-                battery = batteries[battery_index]
+
+                battery_nr = min(distances_dic, key=distances_dic.get)
+                battery = batteries[battery_nr - 1] 
 
                 # check if capacity fits the usage
                 if battery.capacity - house.usage >= 0:
@@ -56,9 +86,10 @@ class Route:
                     
                     break
                 else:
-                    distances[battery_index] = np.nan
-                    if all(np.isnan(distances)):
-                        pass
+                    # update feasible battery distances
+                    del distances_dic[battery_nr]
+                    # distances = [distance for i, distance in enumerate(distances) if i in index_possibilities]
+                    # print(distances)
 
 
     def delete_duplicates():

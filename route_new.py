@@ -32,8 +32,6 @@ class Route:
         return house_to_batteries_distances
 
     def set_routes(self, batteries, house_to_batteries_distances):
-        kopietje = copy.deepcopy(house_to_batteries_distances)
-        print(kopietje)
         for battery in batteries:
             self.routes[battery] = []
             # last_house = list(house_to_batteries_distances.keys())[-1]
@@ -49,7 +47,6 @@ class Route:
                 battery_index = distances.index(min(distances))
                 index_possibilities.remove(battery_index)
                 
-
                 # check if capacity fits the usage
                 if battery.capacity - house.usage >= 0:
                     battery.add_house(house) 
@@ -62,7 +59,7 @@ class Route:
                     break
                 else:
                     # update feasible battery distances
-                    distances = [distance for i, distance in enumerate(distances) if i not in index_possibilities]
+                    distances = [distance for i, distance in enumerate(distances) if i in index_possibilities]
 
 
     def delete_duplicates():
