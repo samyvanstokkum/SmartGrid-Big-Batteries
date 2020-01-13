@@ -20,7 +20,6 @@ def main():
     # calculates and stores the routes
     r = Route()
     routes = r.import_routes(district, batteries)
-    print(routes)
     # plots the district and batteries in a grid
     create_grid(district, x_houses, y_houses, batteries, routes)
 

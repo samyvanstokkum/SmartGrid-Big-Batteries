@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 
 def create_grid(district, x_houses, y_houses, batteries, routes):
-    print(routes)
+
     # set to True to print the houses and batteries
     yes_plot = True
 
@@ -23,7 +23,7 @@ def create_grid(district, x_houses, y_houses, batteries, routes):
         plt.legend(loc='upper center', ncol=10, fontsize=8)
 
         # append house to battery
-        print(routes)
+    
         cable_distance = 0
 
         for battery in batteries:
