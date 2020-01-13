@@ -97,11 +97,11 @@ class Route:
                         x = [house_to_extract.x, house_to_extract.x, max_capacity_battery.x]
                         y = [house_to_extract.y, max_capacity_battery.y, max_capacity_battery.y]
                         self.routes[max_capacity_battery].append((x, y))
-
                         max_capacity_battery.add_house(house_to_extract)
+
                         desired_battery.add_house(remaining_house)
-                        x = [remaining_house.x, remaining_house.x, max_capacity_battery.x]
-                        y = [remaining_house.y, max_capacity_battery.y, max_capacity_battery.y]
+                        x = [remaining_house.x, remaining_house.x, desired_battery.x]
+                        y = [remaining_house.y, desired_battery.y, desired_battery.y]
                         self.routes[desired_battery].append((x,y))
                         
                         nr = 0
