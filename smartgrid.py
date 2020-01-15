@@ -1,7 +1,8 @@
 # Classes
 from house import House
 from battery import Battery
-from route import Route
+from route import *
+
 
 # Functions
 from import_csv import import_district, import_batteries
@@ -12,7 +13,7 @@ def main():
 
     # possible district, algorithm and optimization options 
     district_options = [1, 2, 3]
-    algorithm_types = ["reverse", "non_reverse", "random"]
+    algorithm_types = ["reverse", "random"]
     optimization_types = ["none", "stochastic_ascent_hill_climber", "steepest_ascent_hill_climber", "simulated_annealing"]
 
     # choose which option to use
@@ -50,14 +51,12 @@ def main():
         pass
         # import random_routes
         # TODO: create function for random route
-        r = Route()
-        routes = r.import_routes(district, batteries) 
+        routes = import_routes(district, batteries) 
         optimize(batteries, routes, optimization_type, iterations, random_swap_every_x, plot_costs, plot_grid)    
     
     # when not random algorithm_type 
     else:
-        r = Route()
-        routes = r.import_routes(district, batteries) # add algorithm_type, so will 
+        routes = import_routes(district, batteries) # add algorithm_type
         optimize(batteries, routes, optimization_type, iterations, random_swap_every_x, plot_costs, plot_grid)
 
 # TODO: create different route files (random + reverse and non_reverse)

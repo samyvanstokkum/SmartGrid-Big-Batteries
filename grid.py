@@ -145,7 +145,7 @@ def hill_climbing(batteries, routes, optimization_type, iterations, random_swap_
         
         if plot_fig:
             plt.title(f"cable costs:{cable_distance * 9}")
-            plt.savefig(f"grid_{optimization_type}")
+            # plt.savefig(f"grid_{optimization_type}")
             plt.close()
         
         # append cable distance for these options
@@ -168,5 +168,5 @@ def optimize(batteries, routes, optimization_type, iterations, random_swap_every
         plt.ylabel("costs (distance * 9)")
         plt.plot(all_costs)
         plt.show()
-        plt.savefig(f"{optimization_type}")
+        # plt.savefig(f"{optimization_type}")
 
