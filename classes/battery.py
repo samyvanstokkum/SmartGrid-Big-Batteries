@@ -7,21 +7,15 @@ class Battery:
         self.capacity = capacity
         self.houses = []
 
-    # Add a house to the battery
+    # add a house objecy to the battery
     def add_house(self, house):
         self.houses.append(house)
         self.capacity -= house.usage
 
-    # Remove a house from the battery
+    # remove a house object from the battery
     def remove_house(self, house):
         self.houses.remove(house)
         self.capacity += house.usage
 
-    def calculate_route(self, house):
-        list_x = [house.x, house.x, self.x]
-        list_y = [house.y, self.y, self.y]
-        route = [list_x, list_y]
-        return route
-
-    def __str__(self):
-        return f"{self.id}"
+    def __repr__(self):
+        return f"Battery {self.id}"

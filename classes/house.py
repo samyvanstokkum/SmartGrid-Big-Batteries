@@ -1,3 +1,6 @@
+import csv
+
+
 class House():
 
     def __init__(self, house_id, x, y, usage):
@@ -6,5 +9,5 @@ class House():
         self.y = y
         self.usage = usage
 
-    def __str__(self):
-        return f"{self.id}"
+    def __repr__(self):
+        return f"House {self.id}"
