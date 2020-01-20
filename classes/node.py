@@ -1,7 +1,7 @@
 from operator import itemgetter
 from math import sqrt
 import matplotlib.pyplot as plt
-from branch import Branch
+from classes.branch import Branch
 from random import choice
 
 class Node():

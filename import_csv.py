@@ -2,15 +2,15 @@
 import csv
 
 # Classes
-from house import House
-from battery import Battery
+from classes.house import House
+from classes.battery import Battery
 
 
 def import_district(district_number):
     """Retrieve all houses from csv and create district with house objects."""
 
     # open and read the csv file
-    f = open(f'Houses&Batteries/district{district_number}_houses.csv')
+    f = open(f'data/district{district_number}_houses.csv')
     district_data = csv.reader(f)
     next(district_data)
 
@@ -34,7 +34,7 @@ def import_batteries(district_number):
     """Retrieve batteries from csv and create battery objects."""
 
     # open and read the csv file
-    f = open(f'Houses&Batteries/district{district_number}_batteries.csv')
+    f = open(f'data/district{district_number}_batteries.csv')
     batteries_data = csv.reader(f)
     next(batteries_data)
 
