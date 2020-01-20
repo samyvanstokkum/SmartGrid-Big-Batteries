@@ -11,13 +11,14 @@ from grid import optimize, hill_climbing, swap
 
 def main():
 
-    # possible district, algorithm and optimization options 
+    # possible district, algorithm and optimization options
     district_options = [1, 2, 3]
     algorithm_types = ["reverse", "random"]
-    optimization_types = ["none", "stochastic_ascent_hill_climber", "steepest_ascent_hill_climber", "simulated_annealing"]
+    optimization_types = ["none", "stochastic_ascent_hill_climber",
+                          "steepest_ascent_hill_climber", "simulated_annealing"]
 
     # choose which option to use
-    district_nr = district_options[0] 
+    district_nr = district_options[0]
     algorithm_type = algorithm_types[0]
     optimization_type = optimization_types[2]
     extra_optimzation = "Prim"
@@ -34,7 +35,7 @@ def main():
     # when you don't want random swaps
     if not random_swaps:
         random_swap_every_x = iterations
-    
+
     # parameters for simulated_annealing
     if optimization_type == "simulated_annealing":
         temperature = 90
@@ -51,19 +52,22 @@ def main():
         pass
         # import random_routes
         # TODO: create function for random route
-        routes = import_routes(district, batteries) 
-        optimize(batteries, routes, optimization_type, iterations, random_swap_every_x, plot_costs, plot_grid)    
-    
-    # when not random algorithm_type 
+        routes = import_routes(district, batteries)
+        optimize(batteries, routes, optimization_type, iterations,
+                 random_swap_every_x, plot_costs, plot_grid)
+
+    # when not random algorithm_type
     else:
-        routes = import_routes(district, batteries) # add algorithm_type
-        optimize(batteries, routes, optimization_type, iterations, random_swap_every_x, plot_costs, plot_grid)
+        routes = import_routes(district, batteries)  # add algorithm_type
+        optimize(batteries, routes, optimization_type, iterations,
+                 random_swap_every_x, plot_costs, plot_grid)
 
 # TODO: create different route files (random + reverse and non_reverse)
 # TODO: adjust placement of last house in route file so it will search in different batteries when last house cannot be placed
 # TODO: add simulated_annealing combination
 # TODO: add sharing grids/cables (Prims)
 # TODO: save good options, can't go back to them right now (when you do bad random swap, it's gone)
+
 
 if __name__ == "__main__":
     main()
