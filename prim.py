@@ -1,5 +1,5 @@
-from node import *
-from branch import Branch
+from classes.node import *
+from classes.branch import Branch
 import copy
 import matplotlib.pyplot as plt
 
