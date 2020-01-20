@@ -10,7 +10,6 @@ class Node():
         self.name = "node" + f"{Node.node_id}"
         self.x = x
         self.y = y
-        self.parent = None
         Node.node_id += 1
 
     def __repr__(self):
@@ -41,7 +40,7 @@ def get_neighbours(x1, y1):
     return neighbours
 
 def locate_mins(open_set):
-    key_lowest, h = min(open_set.items(), key=itemgetter(1))
+    _, h = min(open_set.items(), key=itemgetter(1))
     all_mins = []
     for node, cost in open_set.items():
         if cost == h:
@@ -71,16 +70,16 @@ def get_path(start, target):
                 continue
 
             if neighbour not in open_set.keys():
-                neighbour.parent = current
                 open_set[neighbour] = sqrt((neighbour.x - target.x)**2 + (neighbour.y - target.y)**2)
                 # print(open_set)
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
     
-#     start = Node(1, 10)
-#     target = Node(1, 3)
-#     path = get_path(start, target)
+    start = Node(1, 10)
+    target = Node(1, 3)
+    path = get_path(start, target)
+    print(path)
 #     branch = Branch(start, target)
 #     branch.load_path(path)
 #     x, y = get_coordinates(branch.path)
