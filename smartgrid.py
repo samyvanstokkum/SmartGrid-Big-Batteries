@@ -27,8 +27,8 @@ def main():
     random_swap_every_x = 100
 
     # change if want to plot
-    plot_costs = True
-    plot_grid = True
+    plot_costs = False
+    plot_grid = False
     random_swaps = True
 
     # when you don't want random swaps

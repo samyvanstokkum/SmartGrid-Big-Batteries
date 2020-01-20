@@ -159,7 +159,7 @@ def optimize(batteries, routes, optimization_type, iterations, random_swap_every
         iterations = 1
 
     all_costs = hill_climbing(batteries, routes, optimization_type, iterations, random_swap_every_x, plot_grid)
-    print(min(all_costs))
+    #print(min(all_costs))
 
     if plot_costs:
         plt.figure()
