@@ -10,12 +10,12 @@ class Battery:
     # add a house objecy to the battery
     def add_house(self, house):
         self.houses.append(house)
-        self.capacity -= house.usage
+        self.capacity -= house.power
 
     # remove a house object from the battery
     def remove_house(self, house):
         self.houses.remove(house)
-        self.capacity += house.usage
+        self.capacity += house.power
 
     def restore(self):
         self.houses.clear()

@@ -11,7 +11,7 @@ from grid import optimize, hill_climbing, swap, SA
 
 
 def main():
-
+    #__________-
     # possible district, algorithm and optimization options 
     district_options = [1, 2, 3]
     algorithm_types = ["reverse", "random"]
