@@ -19,7 +19,7 @@ def main():
 
     # choose which option to use
     district_nr = district_options[0] 
-    algorithm_type = algorithm_types[0]
+    algorithm_type = algorithm_types[1]
     optimization_type = optimization_types[3]
     extra_optimzation = "Prim" # TODO 
 
@@ -61,14 +61,14 @@ def main():
     if algorithm_type == "random":
         # import random_routes
         routes = rand_import_routes(district, batteries) 
-        optimize(batteries, routes, optimization_type, iterations, random_swap_every_x, 
-        plot_costs, plot_grid, temperature, cooling_rate, markov)    
+        # optimize(batteries, routes, optimization_type, iterations, random_swap_every_x, 
+        # plot_costs, plot_grid, temperature, cooling_rate, markov)    
     
     # when not random algorithm_type 
     elif algorithm_type == "reverse":
         routes = import_routes(district, batteries) # add algorithm_type
         optimize(batteries, routes, optimization_type, iterations, random_swap_every_x, plot_costs,
-         plot_grid, temperature, cooling_rate, markov)
+        plot_grid, temperature, cooling_rate, markov)
 
 # TODO: create different route files (random + reverse and non_reverse)
 # TODO: adjust placement of last house in route file so it will search in different batteries when last house cannot be placed

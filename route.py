@@ -111,28 +111,37 @@ def get_routes(batteries, house_to_batteries_distances):
 def import_routes(district, batteries):
     house_to_batteries_distances = get_house_to_batteries_distances(district, batteries)
     routes = get_routes(batteries, house_to_batteries_distances)
-    colors = ['r', 'b', 'k', 'g', 'm']
-    
-    i = 0
-    plt.figure()
-
-    for battery in batteries:
-        for house in battery.houses:
-            plt.plot(battery.x, battery.y, 'H')
-            plt.plot(house.x, house.y, 'k*')
-        mst = prim(battery)
-    
-        for branch in mst.keys():
-            plt.plot(branch.path[0], branch.path[1], colors[i])
-        i += 1
-        
-    
-    plt.xlim(-2, 55)
-    plt.ylim(-2, 55)
-    plt.show()
-    # print(all_totals)
+    # colors = ['r', 'b', 'k', 'g', 'm']
+    # i = 0
     # plt.figure()
-    # plt.hist(all_totals, bins=50)
+    # for battery in batteries:
+    #     for house in battery.houses:
+    #         plt.plot(battery.x, battery.y, 'H')
+    #         plt.plot(house.x, house.y, 'k*')
+    #     mst = prim(battery)
+    
+    #     for branch in mst.keys():
+    #         plt.plot(branch.path[0], branch.path[1], colors[i])
+    #     i += 1
+    # plt.xlim(-2, 55)
+    # plt.ylim(-2, 55)
     # plt.show()
+
+    all_totals = []
+    for i in range(100):
+        total = 0
+        for battery in batteries:
+            mst = prim(battery)
+            
+            for value in mst.values():
+                total += value
+        all_totals.append(total)
+    
+    print(all_totals)
+    plt.figure()
+    plt.title("Grid length frequencies for 100 different MST configurations")
+    plt.hist(all_totals, bins=50)
+    plt.show()
+
     return routes
     

@@ -17,5 +17,9 @@ class Battery:
         self.houses.remove(house)
         self.capacity += house.usage
 
+    def restore(self):
+        self.houses.clear()
+        self.capacity = 1507.0
+
     def __repr__(self):
         return f"Battery {self.id}"
