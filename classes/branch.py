@@ -1,3 +1,4 @@
+from helpers import get_node_coordinates
 
 class Branch():
     branch_nr = 1
@@ -12,7 +13,7 @@ class Branch():
         Branch.branch_nr += 1
     
     def load_path(self, path):
-        x, y = get_coordinates(path)
+        x, y = get_node_coordinates(path)
         x.insert(0, self.start_x)
         y.insert(0, self.start_y)
         x.append(self.end_x)
@@ -23,13 +24,6 @@ class Branch():
     def __repr__(self):
         return self.name
 
-def get_coordinates(path):
-    x_co = []
-    y_co = []
-    for node in path:
-        x_co.append(node.x)
-        y_co.append(node.y)
-    return (x_co, y_co)
     
 
 

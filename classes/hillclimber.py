@@ -1,10 +1,11 @@
 import random
 
 class HillClimber():
-    def __init__(self, batteries, variant, iterations):
+    def __init__(self, batteries, variant, iterations, share_grid = False):
         self.batteries = batteries
         self.variant = variant
         self.iterations = iterations
+        self.share_grid = share_grid
         self.optimize()
 
     def optimize(self):

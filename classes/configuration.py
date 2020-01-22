@@ -1,5 +1,6 @@
 from house import House
 from battery import Battery
+from prim import Prim
 import csv
 import copy
 import random
@@ -11,9 +12,10 @@ from simulatedannealing import SimulatedAnnealing
 from helpers import *
 
 class Configuration():
-    def __init__(self, type_of_config, district_nr):
+    def __init__(self, type_of_config, district_nr, share_grid = True):
         self.type = type_of_config
         self.district_nr = district_nr
+        self.share_grid = share_grid
         self.district = []
         self.get_district()
         self.batteries = []
@@ -21,11 +23,12 @@ class Configuration():
         self.get_configuration()
         self.routes = {}
 
+
     def get_district(self):
         """Retrieve all houses from csv and create district with house objects."""
 
         # open and read the csv file
-        f = open(f'data/district{self.district_nr}_houses.csv')
+        f = open(f'../data/district{self.district_nr}_houses.csv')
         district_data = csv.reader(f)
         next(district_data)
 
@@ -40,7 +43,7 @@ class Configuration():
         """Retrieve batteries from csv and create battery objects."""
 
         # open and read the csv file
-        f = open(f'data/district{self.district_nr}_batteries.csv')
+        f = open(f'../data/district{self.district_nr}_batteries.csv')
         batteries_data = csv.reader(f)
         next(batteries_data)
 
@@ -64,9 +67,8 @@ class Configuration():
     def random_algo(self):
 
         HOUSES_PER_BATTERY = 30
-
+        t = time.time()
         while True:
-            # t = time.time()
             all_houses = copy.deepcopy(self.district)
             
             for battery in self.batteries:
@@ -81,7 +83,6 @@ class Configuration():
                     for house in sample_of_houses:
                         battery.add_house(house)
                     
-
             satisfing_constraints = []
             for battery in self.batteries:
                 if battery.capacity < 0:
@@ -90,14 +91,11 @@ class Configuration():
                     satisfing_constraints.append(True)
 
             if all(satisfing_constraints):
+                s = t - time.time()
+                print(f"Took {s} seconds to find solution")
                 break
-            # else:
-            #     n = t - time.time()
-            #     if round(n) % 10 == 0:
-            #         print("Still running...")
 
             
-
     def greedy_algo(self):
         houses_to_batteries_distances = get_houses_to_batteries_distances(self.district, self.batteries)
 
@@ -163,19 +161,30 @@ class Configuration():
         pass
 
     def make_plot(self):
-        self.get_routes()
         colors = ['r', 'b', 'k', 'g', 'm']
         plt.figure()
         for battery in self.batteries:
-            plt.plot(battery.x, battery.y, 'H')
+            plt.plot(battery.x, battery.y, 'H', color=colors[battery.id -1])
             for house in battery.houses:
                 plt.plot(house.x, house.y, 'k*')
-            
-        i = 0
-        for battery in self.batteries:
-            for x, y in self.routes[battery]:
-                plt.plot(x, y, colors[i])
-            i += 1
+
+        if self.share_grid == False:
+            self.get_routes()
+            i = 0
+            for battery in self.batteries:
+                for x, y in self.routes[battery]:
+                    plt.plot(x, y, colors[i])
+                i += 1
+        else:
+            i = 0
+            prim = Prim(self.batteries)
+            for mst in prim.mst_container:
+                for branch in mst.keys():
+                    plt.plot(branch.path[0], branch.path[1], colors[i])
+                i += 1
+        plt.xlim(-2, 55)
+        plt.ylim(-2, 55)
+        plt.title(f"Total costs: {prim.costs}")
         plt.show()
 
 
@@ -184,19 +193,19 @@ class Configuration():
             self.routes[battery] = []
             for house in battery.houses:
                 A = get_coordinates(house, battery)
-                self.routes[battery].append(A)
+                self.routes[battery].append(A) 
 
 
 if __name__ == "__main__":
+    
     config1 = Configuration("random", 1)
+    
     # HillClimber(config1.batteries, "steepest", 1000)
     # HillClimber(config1.batteries, 'stochastic', 1000)
     SA = SimulatedAnnealing(config1.batteries)
-    SA.plot_costs()
-
-    for battery in config1.batteries:
-        print(battery.houses)
     config1.make_plot()
+    SA.plot_costs()
+    
 
     
     
