@@ -1,13 +1,15 @@
 # Classes
-from classes.house import House
-from classes.battery import Battery
-from route import *
-from random_route import *
-
+# from classes.house import House
+# from classes.battery import Battery
+# from route import *
+# from random_route import *
+from classes.hillclimber import HillClimber
+from classes.simulatedannealing import SimulatedAnnealing
+from classes.configuration import Configuration
 
 # Functions
-from import_csv import import_district, import_batteries
-from grid import optimize, hill_climbing, swap, SA
+# from import_csv import import_district, import_batteries
+# from grid import optimize, hill_climbing, swap, SA
 
 
 def main():

@@ -188,9 +188,12 @@ class Configuration():
 
 
 if __name__ == "__main__":
-    config1 = Configuration("greedy", 1)
+    config1 = Configuration("random", 1)
     # HillClimber(config1.batteries, "steepest", 1000)
-    HillClimber(config1.batteries, 'stochastic', 1000)
+    # HillClimber(config1.batteries, 'stochastic', 1000)
+    SA = SimulatedAnnealing(config1.batteries)
+    SA.plot_costs()
+
     for battery in config1.batteries:
         print(battery.houses)
     config1.make_plot()

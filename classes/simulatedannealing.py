@@ -1,5 +1,6 @@
 from math import log, floor, exp
 import random
+import matplotlib.pyplot as plt
 
 
 class SimulatedAnnealing():
@@ -9,13 +10,48 @@ class SimulatedAnnealing():
         self.temp = temp
         self.cooling_rate = cooling_rate
         self.scheme = scheme 
+        self.cable_costs = []
         self.optimize()
     
     def optimize(self):
+
+        # calculate number of iterations possible with current temp and cooling rate
         iterations = floor(log(1/self.temp)/log(1 - self.cooling_rate))
+        
         for i in range(iterations):
+
+            # calculate costs of current iteration and perform SA
+            self.get_costs()
             self.SA()
+
+            # update temperature
+            if self.scheme == "linear":
+                self.temp *= 1 - self.cooling_rate
+            elif self.schema == "exp":
+                pass
+            else:
+                pass
     
+    def get_costs(self):
+        costs = 0
+
+        if self.share_grid == False:
+
+            for battery in self.batteries:
+                for house in battery.houses:
+                    costs += (abs(house.x - battery.x) + abs(house.y - battery.y)) * 9
+            
+            self.cable_costs.append(costs)
+
+        else:
+            pass
+
+    def plot_costs(self):
+        plt.figure()
+        plt.plot(self.cable_costs)
+        plt.xlabel("iterations")
+        plt.ylabel("costs")
+        plt.show()
 
     def SA(self):
         # choose random battery and random house
