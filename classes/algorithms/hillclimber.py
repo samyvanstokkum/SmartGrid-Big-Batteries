@@ -228,3 +228,12 @@ class HillClimber():
             plt.ylabel("costs")
             plt.show()
         
+
+class HillClimberShare(HillClimber):   
+    def optimize(self):
+        for i in range(self.iterations):
+            self.get_costs()
+            self.hillclimber_sharing()
+    
+    def hillclimber_sharing(self):
+        pass
