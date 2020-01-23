@@ -133,9 +133,13 @@ class Configuration():
 
         swap_options = []
         while not swap_options:
-            desired_battery_nr = min(house_to_batteries_distances, key=house_to_batteries_distances.get)
-            desired_battery = self.batteries[desired_battery_nr - 1]
-            del house_to_batteries_distances[desired_battery_nr] # TODO: MISSCHIEN EEN TRY-EXCEPT
+            try:
+                desired_battery_nr = min(house_to_batteries_distances, key=house_to_batteries_distances.get)
+                desired_battery = self.batteries[desired_battery_nr - 1]
+                del house_to_batteries_distances[desired_battery_nr] # TODO: MISSCHIEN EEN TRY-EXCEPT
+            except:
+                print("ojeeeee......")
+                return 1
 
             for house in desired_battery.houses:
                 if house.power < remaining_capacity[max_capacity_battery_nr] and house.power + remaining_capacity[desired_battery_nr] > remaining_house.power:
