@@ -1,5 +1,5 @@
-from classes.objects.node import Node
-from classes.objects.branch import Branch
+from node import Node
+from branch import Branch
 from helpers import *
 import copy
 

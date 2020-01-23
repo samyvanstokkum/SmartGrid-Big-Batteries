@@ -2,7 +2,7 @@ import random
 import matplotlib.pyplot as plt
 from prim import Prim
 from helpers import *
-
+import copy
 
 class HillClimber():
     def __init__(self, batteries, variant, iterations, share_grid):
@@ -15,7 +15,6 @@ class HillClimber():
 
     def optimize(self):
         if self.share_grid:
-
             if self.variant == "stochastic":
                 for i in range(self.iterations):
                     self.get_costs()
@@ -56,21 +55,24 @@ class HillClimber():
         for potential_battery_nr in all_battery_nrs:       
             potential_battery = self.batteries[potential_battery_nr - 1]
             
-            for potential_house in potential_battery.houses:
+            houses = potential_battery.houses
+            for potential_house in houses:
                 chosen_battery_capacity = chosen_battery.capacity + chosen_house.power
 
                 # check if swap is possible capacity-wise
                 if potential_house.power < chosen_battery_capacity and chosen_house.power < potential_battery.capacity + potential_house.power:
                     # calculate current and new distance
+                    # print(f"Potential House: {potential_house}")
+                    # print(f"Potential Battery: {potential_battery}")
                     swap(potential_house, potential_battery, chosen_house, chosen_battery)
-
+                    
                     prim = Prim(self.batteries)
                     new_costs = prim.costs
                     cost_difference = old_costs - new_costs
-
+                
                     # reverse the swap
                     reverse_swap(potential_house, potential_battery, chosen_house, chosen_battery)
-                    
+
                     # save every option as tuple in a list
                     swap_options.append((potential_battery, potential_house, cost_difference))
     
@@ -82,6 +84,7 @@ class HillClimber():
             battery_to_swap_with, house_to_extract, _ = random.choice(better_options) 
 
             swap(house_to_extract, battery_to_swap_with, chosen_house, chosen_battery)
+            print("Swapped, :) jeeeej!, Lekker dan, congratz")
 
     def stochastic_hillclimber_no_sharing(self):
 
@@ -188,7 +191,8 @@ class HillClimber():
         for potential_battery_nr in all_battery_nrs:       
             potential_battery = self.batteries[potential_battery_nr - 1]
             
-            for potential_house in potential_battery.houses:
+            houses = potential_battery.houses
+            for potential_house in houses:
                 chosen_battery_capacity = chosen_battery.capacity + chosen_house.power
 
                 # check if swap is possible capacity-wise
@@ -212,14 +216,22 @@ class HillClimber():
         battery_to_swap_with, house_to_extract, cost_decrease = max(swap_options, key=lambda x: x[2])
         if cost_decrease > 0:
             swap(house_to_extract, battery_to_swap_with, chosen_house, chosen_battery)
+            print("Swapped, :) jeeeej!, Lekker dan, congratz")
 
     def get_costs(self):
         costs = 0
-        for battery in self.batteries:
-            for house in battery.houses:
-                costs += (abs(house.x - battery.x) + abs(house.y - battery.y)) * 9
-        
-        self.all_costs.append(costs)
+
+        if self.share_grid == False:
+
+            for battery in self.batteries:
+                for house in battery.houses:
+                    costs += (abs(house.x - battery.x) + abs(house.y - battery.y)) * 9
+            
+            self.all_costs.append(costs)
+
+        else:
+            prim = Prim(self.batteries)
+            self.all_costs.append(prim.costs)
 
     def plot_costs(self):
             plt.figure()

@@ -11,11 +11,13 @@ class Battery:
     def add_house(self, house):
         self.houses.append(house)
         self.capacity -= house.power
+        self.houses = sorted(self.houses, key=lambda x: x.id)
 
     # remove a house object from the battery
     def remove_house(self, house):
         self.houses.remove(house)
         self.capacity += house.power
+        self.houses = sorted(self.houses, key=lambda x: x.id)
 
     def restore(self):
         self.houses.clear()

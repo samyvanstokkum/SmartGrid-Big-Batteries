@@ -68,8 +68,9 @@ def pathfinder(start, target):
     open_set = {start: sqrt((start.x - target.x)**2 + (start.y - target.y)**2) } # nodes to be evaluated # h = distance from end node
     closed_set = {} # nodes already evaluated
     while True:
-        all_options = locate_mins(open_set)
-        current, h = choice(all_options)
+        current, h = min(open_set.items(), key=itemgetter(1))
+        # all_options = locate_mins(open_set)
+        # current, h = choice(all_options)
         path.append(current)
         del open_set[current]
         closed_set[current] = h

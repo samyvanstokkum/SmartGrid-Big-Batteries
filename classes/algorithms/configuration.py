@@ -185,6 +185,7 @@ class Configuration():
                     plt.plot(branch.path[0], branch.path[1], colors[i])
                 i += 1
             plt.title(f"Total costs: {prim.costs}")
+            
 
         plt.xlim(-2, 55)
         plt.ylim(-2, 55)

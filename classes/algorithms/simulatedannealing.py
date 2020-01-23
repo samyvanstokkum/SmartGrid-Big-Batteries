@@ -131,12 +131,12 @@ class SimulatedAnnealing():
         for potential_battery_nr in all_battery_nrs:       
             potential_battery = self.batteries[potential_battery_nr-1]
             
-            for potential_house in potential_battery.houses:
+            houses = potential_battery.houses
+            for potential_house in houses:
                 chosen_battery_cap = chosen_battery.capacity + chosen_house.power
 
                 # check if swap is possible capacity-wise
                 if potential_house.power < chosen_battery_cap and chosen_house.power < potential_battery.capacity + potential_house.power:
-                    
                     
                     swap(potential_house, potential_battery, chosen_house, chosen_battery)
 
@@ -166,5 +166,5 @@ class SimulatedAnnealing():
         # make swap
         if acceptance > random.random():
             swap(house_to_extract, desired_battery, chosen_house, chosen_battery)
-
+            print("Swapped, :) jeeeej!, Lekker dan, congratz")
         
