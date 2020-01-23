@@ -16,7 +16,12 @@ def get_houses_to_batteries_distances(district, batteries):
     houses_to_batteries_distances = {house: distance for house, distance in 
         sorted(houses_to_batteries_distances.items(), key=lambda item: sum(item[1]), reverse=True)
         }
-        
+    
+    # house, distances = choice(tuple(houses_to_batteries_distances.items()))
+    # print(house)
+    # del houses_to_batteries_distances[house]
+    # houses_to_batteries_distances[house] = distances
+
     return houses_to_batteries_distances
 
 def get_house_to_batteries_distances(distances):

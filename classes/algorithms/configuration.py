@@ -94,6 +94,7 @@ class Configuration():
                 break
       
     def greedy_algo(self):
+        
         houses_to_batteries_distances = get_houses_to_batteries_distances(self.district, self.batteries)
 
         for house, distances in houses_to_batteries_distances.items():
@@ -138,8 +139,9 @@ class Configuration():
                 desired_battery = self.batteries[desired_battery_nr - 1]
                 del house_to_batteries_distances[desired_battery_nr] # TODO: MISSCHIEN EEN TRY-EXCEPT
             except:
-                print("ojeeeee......")
+                print("ojeej..")
                 return 1
+                
 
             for house in desired_battery.houses:
                 if house.power < remaining_capacity[max_capacity_battery_nr] and house.power + remaining_capacity[desired_battery_nr] > remaining_house.power:

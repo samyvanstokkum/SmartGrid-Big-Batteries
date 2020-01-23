@@ -6,7 +6,7 @@ from prim import Prim
 
 
 class SimulatedAnnealing():
-    def __init__(self, batteries, share_grid, temp = 102, cooling_rate = 0.03, scheme = "linear"):
+    def __init__(self, batteries, share_grid, temp = 102, cooling_rate = 0.003, scheme = "linear"):
         self.batteries = batteries
         self.share_grid = share_grid 
         self.temp = temp
