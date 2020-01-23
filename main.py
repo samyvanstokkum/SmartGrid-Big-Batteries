@@ -20,8 +20,8 @@ def main():
     # markov, different temp and cooling rates, linear/exp, etc
 
 
-    config1 = Configuration("greedy", 1, share_grid = False)
-    HC = HillClimber(config1.batteries, "steepest", 1000, share_grid = True)
+    config1 = Configuration("greedy", 2, share_grid = False)
+    HC = HillClimber(config1.batteries, "stochastic", 10, share_grid = False)
     HC.plot_costs()
     # HillClimber(config1.batteries, 'stochastic', 1000, share_Grid = False)
     # SA = SimulatedAnnealing(config1.batteries, share_grid = False)

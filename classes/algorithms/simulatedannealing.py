@@ -21,7 +21,7 @@ class SimulatedAnnealing():
         iterations = floor(log(1/self.temp)/log(1 - self.cooling_rate))
         for i in range(iterations):
             if i % 10 == 0:
-                print(f"still running bro... {i}")
+                print(f"still running... {i}")
             # calculate costs of current iteration and perform SA
             
             self.get_costs()
