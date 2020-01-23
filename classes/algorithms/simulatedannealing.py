@@ -6,7 +6,7 @@ from prim import Prim
 
 
 class SimulatedAnnealing():
-    def __init__(self, batteries, share_grid = True, temp = 102, cooling_rate = 0.03, scheme = "linear"):
+    def __init__(self, batteries, share_grid, temp = 102, cooling_rate = 0.03, scheme = "linear"):
         self.batteries = batteries
         self.share_grid = share_grid 
         self.temp = temp
@@ -38,8 +38,6 @@ class SimulatedAnnealing():
             else:
                 pass
 
-
-    
     def get_costs(self):
         costs = 0
 
@@ -65,7 +63,7 @@ class SimulatedAnnealing():
     def SA_no_sharing(self):
         # choose random battery and random house
         chosen_battery = random.choice(self.batteries)
-        chosen_house = random.choice(random_battery.houses)
+        chosen_house = random.choice(chosen_battery.houses)
 
         # get index of battery number and delete the current battery 
         all_battery_nrs = [1, 2, 3, 4, 5]
@@ -82,7 +80,7 @@ class SimulatedAnnealing():
                 chosen_battery_cap = chosen_battery.capacity + chosen_house.power
 
                 # check if swap is possible capacity-wise
-                if potential_house.power < chosen_battery_cap and chosen_house.power < potential_battery.capacity + house.power:
+                if potential_house.power < chosen_battery_cap and chosen_house.power < potential_battery.capacity + potential_house.power:
                     
                     # calculate current and new distance
                     potential_distance = abs(potential_house.x - potential_battery.x) + abs(potential_house.y - potential_battery.y) + abs(chosen_house.x - chosen_battery.x) + abs(chosen_house.y - chosen_battery.y)
@@ -115,7 +113,6 @@ class SimulatedAnnealing():
             chosen_battery.add_house(house_to_extract)
             desired_battery.add_house(chosen_house)
             
-
     def SA_sharing(self):
         # choose random battery and random house
         chosen_battery = random.choice(self.batteries)

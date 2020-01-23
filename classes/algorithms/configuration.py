@@ -1,18 +1,17 @@
 from house import House
 from battery import Battery
 from prim import Prim
+from helpers import *
+
 import csv
 import copy
 import random
 import matplotlib.pyplot as plt
 import time
-from hillclimber import HillClimber
-from simulatedannealing import SimulatedAnnealing
 
-from helpers import *
 
 class Configuration():
-    def __init__(self, type_of_config, district_nr, share_grid = True):
+    def __init__(self, type_of_config, district_nr, share_grid):
         self.type = type_of_config
         self.district_nr = district_nr
         self.share_grid = share_grid
@@ -28,7 +27,7 @@ class Configuration():
         """Retrieve all houses from csv and create district with house objects."""
 
         # open and read the csv file
-        f = open(f'../data/district{self.district_nr}_houses.csv')
+        f = open(f'data/district{self.district_nr}_houses.csv')
         district_data = csv.reader(f)
         next(district_data)
 
@@ -43,7 +42,7 @@ class Configuration():
         """Retrieve batteries from csv and create battery objects."""
 
         # open and read the csv file
-        f = open(f'../data/district{self.district_nr}_batteries.csv')
+        f = open(f'data/district{self.district_nr}_batteries.csv')
         batteries_data = csv.reader(f)
         next(batteries_data)
 
@@ -54,8 +53,7 @@ class Configuration():
             battery = Battery(battery_id, x, y, capacity)
 
             self.batteries.append(battery)
-    
-    
+
     def get_configuration(self):
         if self.type == "random":
             self.random_algo()
@@ -94,8 +92,7 @@ class Configuration():
                 s = t - time.time()
                 print(f"Took {s} seconds to find solution")
                 break
-
-            
+      
     def greedy_algo(self):
         houses_to_batteries_distances = get_houses_to_batteries_distances(self.district, self.batteries)
 
@@ -156,7 +153,6 @@ class Configuration():
         desired_battery.add_house(remaining_house)
         max_capacity_battery.add_house(house_to_extract)
 
-        
     def cluster_algo(self):
         pass
 
@@ -170,11 +166,13 @@ class Configuration():
 
         if self.share_grid == False:
             self.get_routes()
+            # get costs? 
             i = 0
             for battery in self.batteries:
                 for x, y in self.routes[battery]:
                     plt.plot(x, y, colors[i])
                 i += 1
+
         else:
             i = 0
             prim = Prim(self.batteries)
@@ -182,11 +180,11 @@ class Configuration():
                 for branch in mst.keys():
                     plt.plot(branch.path[0], branch.path[1], colors[i])
                 i += 1
+            plt.title(f"Total costs: {prim.costs}")
+
         plt.xlim(-2, 55)
         plt.ylim(-2, 55)
-        plt.title(f"Total costs: {prim.costs}")
         plt.show()
-
 
     def get_routes(self, share_grid = False):
         for battery in self.batteries:
@@ -195,17 +193,6 @@ class Configuration():
                 A = get_coordinates(house, battery)
                 self.routes[battery].append(A) 
 
-
-if __name__ == "__main__":
-    
-    config1 = Configuration("random", 1)
-    
-    # HillClimber(config1.batteries, "steepest", 1000)
-    # HillClimber(config1.batteries, 'stochastic', 1000)
-    SA = SimulatedAnnealing(config1.batteries)
-    config1.make_plot()
-    SA.plot_costs()
-    
 
     
     
