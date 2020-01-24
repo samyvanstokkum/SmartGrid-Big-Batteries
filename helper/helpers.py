@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from random import choice
 from node import Node
 
+
 def get_houses_to_batteries_distances(district, batteries):
     houses_to_batteries_distances = {}
     for house in district:

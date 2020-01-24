@@ -19,17 +19,16 @@ def main():
     # change this into get_string from user:
     # markov, different temp and cooling rates, linear/exp, etc
 
-    for i in range(100):
-        print('____________________')
-        print(f'{i}')
-        config1 = Configuration("greedy", 2, share_grid = True)
-        
-    # HC = HillClimber(config1.batteries, "steepest", 100, share_grid = True)
+    config1 = Configuration("greedy", 1, share_grid = False)
+    config1.make_plot()
+
+    # HC = HillClimber(config1.batteries, "steepest", 10, share_grid = True)
     # HC.plot_costs()
+
     # HillClimber(config1.batteries, 'stochastic', 1000, share_Grid = False)
-    # SA = SimulatedAnnealing(config1.batteries, share_grid = True)
-    # SA.plot_costs()
-    # config1.make_plot()
+    SA = SimulatedAnnealing(config1.batteries, share_grid = False)
+    SA.plot_costs()
+    config1.make_plot()
     
     
 

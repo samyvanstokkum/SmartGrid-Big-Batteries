@@ -22,7 +22,6 @@ class Configuration():
         self.get_configuration()
         self.routes = {}
 
-
     def get_district(self):
         """Retrieve all houses from csv and create district with house objects."""
 
@@ -178,6 +177,12 @@ class Configuration():
                 for x, y in self.routes[battery]:
                     plt.plot(x, y, colors[i])
                 i += 1
+            
+            costs = 0
+            for battery in self.batteries:
+                for house in battery.houses:
+                    costs += (abs(house.x - battery.x) + abs(house.y - battery.y)) * 9
+            plt.title(f"Total costs:{costs}")
 
         else:
             i = 0
