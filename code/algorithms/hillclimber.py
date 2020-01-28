@@ -13,7 +13,7 @@ class HillClimber():
     Plotting the results is also possible.
     """
 
-    def __init__(self, batteries, variant, share_grid, iterations = 10):
+    def __init__(self, batteries, variant, share_grid, iterations = 1000):
         self.batteries = batteries
         self.variant = variant
         self.iterations = iterations
