@@ -40,7 +40,7 @@ class SimulatedAnnealing():
             iterations = floor(log(1/self.temp)/log(1 - self.cooling_rate))
 
         for i in range(iterations):
-            progress = (i/iterations)*100
+            progress = round((i/iterations)*100, 2)
             if i % 20 == 0:
                 print(f"Progress: {progress}%")
             if i == 0:

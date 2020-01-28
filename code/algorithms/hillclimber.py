@@ -28,7 +28,7 @@ class HillClimber():
         """
 
         for i in range(self.iterations):
-            progress = (i/iterations)*100
+            progress = round((i/iterations)*100, 2)
             if i % 20 == 0:
                 print(f"Progress: {progress}%")
             self.get_costs()
