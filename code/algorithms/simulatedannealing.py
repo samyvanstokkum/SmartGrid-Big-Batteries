@@ -7,6 +7,15 @@ import copy
 
 
 class SimulatedAnnealing():
+    """This class is devoted to the simulated annealing algorithm.
+
+    Given an initial solution and several parameters, this algorithm 
+    finds new solutions and, mostly in the beginning of the run, 
+    accepts worse solutions in order to get to different optima. 
+    In the end the process cools down and a (local) optimum 
+    will be found.
+    """
+
     def __init__(self, batteries, share_grid, temp = 100, cooling_rate = 0.03, scheme = "linear"):
         self.batteries = batteries
         self.share_grid = share_grid 
@@ -17,36 +26,29 @@ class SimulatedAnnealing():
         self.optimize()
     
     def optimize(self):
+        """Optimize the configuration depending on the parameters.
+        Keep a copy of the best configuration and update temperature
+        after each iteration."""
 
-        # calculate number of iterations possible with current temp and cooling rate
         if self.scheme == "linear":
             iterations = floor(self.temp/self.cooling_rate)
 
         elif self.scheme == "exp":
             iterations = floor(log(1/self.temp)/log(1 - self.cooling_rate))
 
-
-        for i in range(iterations):
-            if i % 10 == 0:
-                print(f"still running... {i}")
-            # calculate costs of current iteration and perform SA
-            
-        
-            # best_costs starts as costs from i = 0
+        for i in range(iterations):       
             if i == 0:
                 self.get_costs()
                 best_costs = copy.deepcopy(self.all_costs[0])
                 best_option = copy.deepcopy(self.batteries)
 
-            self.SA()
+            self.anneal()
             self.get_costs()
 
-            # # check if cost from this i is better than best_cost option and update best_option   
             if i > 0 and self.all_costs[-1] < best_costs:
                 best_option = copy.deepcopy(self.batteries)
                 best_costs = self.all_costs[-1]
 
-            # update temperature
             if self.scheme == "linear":
                 self.temp = self.temp - self.cooling_rate
             elif self.scheme == "exp":
@@ -55,8 +57,10 @@ class SimulatedAnnealing():
         self.batteries = best_option
 
     def get_costs(self):
-        costs = 0
+        """Get costs for current configuration depending
+        on grid sharing possibilities."""
 
+        costs = 0
         if self.share_grid == False:
 
             for battery in self.batteries:
@@ -70,80 +74,72 @@ class SimulatedAnnealing():
             self.all_costs.append(prim.costs)
 
     def plot_costs(self,results_directory, optimization, district_nr):
-        save_name_grid = f"{district_nr}_{optimization}"
+        """Plot the cost progression given the optimazation type and
+        district number. Save the figure into the results folder."""
+
+        figure_name = f"{district_nr}_{optimization}"
         plt.figure()
         plt.plot(self.all_costs)
         plt.xlabel("iterations")
         plt.title(f"Begin costs: {self.all_costs[0]} \n minimum costs: {min(self.all_costs)}\n SA")
         plt.ylabel("costs")
-        plt.savefig(results_directory + save_name_grid)
+        plt.savefig(results_directory + figure_name)
 
         plt.show()
 
-    def SA(self):
-        # choose random battery and random house
+    def anneal(self):
+        """Find possible swaps between a randomly chosen house 
+        and all other houses. If there are multiple swaps possible, 
+        make the best swap if it is an improvement or accept a 
+        worse swap depending on an acceptance probability. This
+        in turns depends on the temperature at that time."""
+
         chosen_battery = random.choice(self.batteries)
         chosen_house = random.choice(chosen_battery.houses)
 
-        # get index of battery number and delete the current battery 
-        all_battery_nrs = [1, 2, 3, 4, 5]
-        all_battery_nrs.remove(chosen_battery.id) 
-
-        # empty list for all swap_options
         swap_options = []
         old_costs = self.all_costs[-1]
 
-        # loop through all batteries and their houses to check if a swap is possible and what the cost would be
-        for potential_battery_nr in all_battery_nrs:       
-            potential_battery = self.batteries[potential_battery_nr-1]
-            
+        for potential_battery in self.batteries:
+            if potential_battery == chosen_battery:
+                continue
             for potential_house in potential_battery.houses:
-                chosen_battery_cap = chosen_battery.capacity + chosen_house.power
+                chosen_capacity = chosen_battery.capacity + chosen_house.power
+                potential_capacity = potential_battery.capacity + potential_house.power
 
-                # check = check_swap(potential_house, chosen_battery_cap, chosen_house, potential_battery)
-                # check if swap is possible capacity-wise
-
-                if potential_house.power < chosen_battery_cap and \
-                    chosen_house.power < potential_battery.capacity + potential_house.power:
+                if potential_house.power < capacity and \
+                    chosen_house.power < potential_capacity:
                     
                     if self.share_grid == False:
-                        # calculate current and new distance
                         potential_distance = get_manhattan_distance(potential_house, potential_battery) + \
                             get_manhattan_distance(chosen_house, chosen_battery)
+
                         new_distance = get_manhattan_distance(chosen_house, potential_battery) + \
                             get_manhattan_distance(potential_house, chosen_battery)
+
                         cost_difference = potential_distance - new_distance
                     
-                    else: # share grid == True
+                    else: 
                         swap(potential_house, potential_battery, chosen_house, chosen_battery)
 
                         prim = Prim(self.batteries)
                         new_costs = prim.costs
                         cost_difference = old_costs - new_costs
 
-                        # reverse the swap
                         reverse_swap(potential_house, potential_battery, chosen_house, chosen_battery)
 
-                    # save every option as tuple in a list
                     swap_options.append((potential_battery, potential_house, cost_difference))
-        
-        # check if want to make swap happen (only when swap_options are present) and:
+
         acceptance = 0
-        
         if swap_options:
             desired_battery, house_to_extract, cost_decrease = max(swap_options, key= lambda x: x[2])
             if cost_decrease > 0:
                 acceptance = 1
-
             else:
                 desired_battery, house_to_extract, cost_increase = random.choice(swap_options)
                 acceptance = exp(cost_increase/self.temp)
-            
-        # make swap
         if acceptance > random.random():
-
-            # remove house from desired battery
             swap(house_to_extract, desired_battery, chosen_house, chosen_battery)
-            print("Swapped")
+    
             
        

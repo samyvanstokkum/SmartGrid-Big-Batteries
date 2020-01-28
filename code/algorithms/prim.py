@@ -4,6 +4,14 @@ from helpers import *
 import copy
 
 class Prim():
+    """This class is devoted to Prim's algorithm.
+
+    It creates a minimum spanning tree as follows.
+    For a given set of houses allocated to a
+    battery, this class spans all trees for 
+    all batteries and determines its costs.
+    """
+    
     def __init__(self, batteries):
         self.batteries = batteries 
         self.mst_container = []
@@ -12,11 +20,17 @@ class Prim():
         self.set_costs()
         
     def span_trees(self):
+        """Span a tree for each battery with its houses.
+        For all nodes in the tree, determine all paths to
+        remaining houses and choose the cheapest path. 
+        Add the new house to the tree and all nodes of 
+        its path. Continue until all houses are in the tree.
+        """
+
         for battery in self.batteries:
             mst = {}
             tree = {battery: {} }
             houses = copy.deepcopy(battery.houses)
-            all_nodes = []
 
             for house in houses:
                 distance = get_manhattan_distance(house, battery)
@@ -25,8 +39,6 @@ class Prim():
             least_distance = {}
             while houses:
                 for vertice in tree.keys():
-                    
-                    # get for all vertices the closest connection
                     distance_to_targets = tree[vertice]
                     house, distance = min(distance_to_targets.items(), key=lambda x: x[1])
                     least_distance[vertice] = (house, distance)
@@ -57,6 +69,9 @@ class Prim():
             self.mst_container.append(mst)
             
     def set_costs(self):
+        """Set costs for all minimimum spanning trees
+        and sum them."""
+
         for mst in self.mst_container:
             for branch in mst:
                 self.costs += mst[branch] 

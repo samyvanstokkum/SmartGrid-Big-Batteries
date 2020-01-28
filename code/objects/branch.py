@@ -1,6 +1,7 @@
 from helpers import get_node_coordinates
 
 class Branch():
+    """Create a branch consisting of nodes."""
     branch_nr = 1
 
     def __init__(self, start, end):
@@ -13,6 +14,12 @@ class Branch():
         Branch.branch_nr += 1
     
     def load_path(self, path):
+        """Find the coordinates for all nodes on the path.
+
+        Return a tuple of lists containing the x and y 
+        coordinates.
+        """
+        
         x, y = get_node_coordinates(path)
         x.insert(0, self.start_x)
         y.insert(0, self.start_y)

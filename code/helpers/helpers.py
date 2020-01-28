@@ -54,7 +54,9 @@ def get_node_coordinates(path):
     return (x_co, y_co)
 
 def get_neighbours(x1, y1):
-    """Get all neighbours for a given point on the grid."""
+    """Get all neighbours for a given point on the grid.
+    Only allow for adjacent neighbours."""
+
     DISTRICT_SIZE = 51
     neighbours = []
     feasible_points = list(range(DISTRICT_SIZE))
@@ -98,7 +100,7 @@ def pathfinder(start, target):
                 open_set[neighbour] = sqrt((neighbour.x - target.x)**2 + 
                                             (neighbour.y - target.y)**2)
                 
-def get_manhattan_distance(point1, point2):
+def get_distance(point1, point2):
     """Get the manhattan distances between two points."""
     return abs(point1.x - point2.x) + abs(point1.y - point2.y)
 
@@ -117,7 +119,6 @@ def reverse_swap(potential_house, potential_battery,chosen_house, chosen_battery
     chosen_battery.remove_house(potential_house)
     chosen_battery.add_house(chosen_house)
     potential_battery.add_house(potential_house)
-
 
 def get_random_batteries(district):
     # Calculate total battery capacity needed
@@ -144,8 +145,8 @@ def get_random_batteries(district):
 
     return batteries
 
-
 def get_clusters(district, batteries):
+
     points = []
     for house in district:
         coordinate = [house.x, house.y]
@@ -161,3 +162,14 @@ def get_clusters(district, batteries):
     clusters = kmeans.cluster_centers_
 
     return labels, points, clusters
+
+def check(house, remaining_house, random_battery, battery):
+    """Return True if combination of houses and batteries allow
+    for a swap. Return False otherwise"""
+    
+    if remaining_house.power < battery.capacity + house.power:
+        go_on = True
+    if go_on:
+        if house.power < random_battery.capacity:
+            return True
+    return False

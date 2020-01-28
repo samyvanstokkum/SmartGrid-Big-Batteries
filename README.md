@@ -1,11 +1,11 @@
 # Smart Grid
-More and more people are starting to generate their own energy. Often times, they generate more than they can use. The surplus could be sold back to the energy supplier, however the infrastucture is not build for that. To manage this, batteries should be placed.
+More and more people are starting to generate their own energy. Often times, they generate more than they can use. The surplus could be sold back to the energy supplier, however the infrastucture is not build for that. To manage this, batteries should be placed to store this leftover energy. 
 
 ## Getting Started
 
 ### Prerequisites
 
-The codebase is written in its entirety in [Python3.8.1](https://www.python.org/downloads/). Requirements.txt contains all the necessary packages to successfully run the code. To These are easily installed with the following instuction:
+The codebase is written in its entirety in [Python3.8.1](https://www.python.org/downloads/). Requirements.txt contains all the necessary packages to successfully run the code. These are easily installed with the following instuction:
 
 ```
 pip install -r requirements.txt
