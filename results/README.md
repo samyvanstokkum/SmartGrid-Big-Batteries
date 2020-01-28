@@ -9,4 +9,4 @@ As an example:
 greedy_1_hillclimber.png
 ```
 
-The first word (greed) in the files is the initialization used. The number (1) is the district it was used on. The last word (hillclimber) is the optimization we used.
+The first word (greedy) in the files is the initialization used. The number (1) is the district it was used on. The last word (hillclimber) is the used optimization.
