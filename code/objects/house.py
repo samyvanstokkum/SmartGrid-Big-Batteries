@@ -1,0 +1,13 @@
+import csv
+
+
+class House():
+
+    def __init__(self, house_id, x, y, power):
+        self.id = house_id
+        self.x = x
+        self.y = y
+        self.power = power
+
+    def __repr__(self):
+        return f"House {self.id}"

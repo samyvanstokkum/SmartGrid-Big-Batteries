@@ -2,11 +2,11 @@
 import os, sys
 directory = os.path.dirname(os.path.realpath(__file__))
 results_directory = directory + '/results/'
-sys.path.append(os.path.join(directory, "classes"))
-sys.path.append(os.path.join(directory, "helper"))
+sys.path.append(os.path.join(directory, "code"))
 sys.path.append(os.path.join(directory, "data"))
-sys.path.append(os.path.join(directory, "classes", "objects"))
-sys.path.append(os.path.join(directory, "classes", "algorithms"))
+sys.path.append(os.path.join(directory, "code", "objects"))
+sys.path.append(os.path.join(directory, "code", "algorithms"))
+sys.path.append(os.path.join(directory, "code", "helpers"))
 
 # import classes and functions
 from hillclimber import HillClimber
@@ -30,24 +30,17 @@ def main():
     districts = ["1","2","3"]
     initialization_options = ["greedy", "random", "cluster"]
     optimization_options = ["none", "hillclimber","simulated annealing"]
-    share_gridlines = ["yes", "no"]
+    yes_no = ["yes", "no"]
 
     # welcome user
     print("\nWelcome to SmartGrid\n")
     
     # let user choose which parameters to use
-    initialization, district, share_grid, optimization, optimization_type = get_user_input(initialization_options, districts, share_gridlines, optimization_options)
-
-    # move to place where plots are made
-    
-    # save_name_grid = "grid" + district  + optimization
-    # save_name_costs = "costs" + district  + optimization
-    # plt.savefig(results_directory + save_name_costs + optimization_type)
-    # plt.savefig(results_directory + save_name_grid + optimization_type)
+    initialization, district, share_grid, optimization, optimization_type, advanced = get_user_input(initialization_options, districts, yes_no, optimization_options)
 
 
     # initial configuration
-    config1 = Configuration(initialization, district, share_grid)
+    config1 = Configuration(initialization, district, share_grid, advanced)
 
     # plot the configuration grid when user wants no optimization 
     if optimization == "none":
