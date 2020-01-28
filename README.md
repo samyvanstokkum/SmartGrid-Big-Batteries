@@ -11,8 +11,6 @@ The codebase is written in its entirety in [Python3.8.1](https://www.python.org/
 pip install -r requirements.txt
 ```
 
-Deze codebase is volledig geschreven in [Python3.6.3](https://www.python.org/downloads/). In requirements.txt staan alle benodigde packages om de code succesvol te draaien. Deze zijn gemakkelijk te installeren via pip dmv. de volgende instructie:
-
 ### Structure
 
 All the Python scripts are located in the "code" folder. The "data" map contains all the input values. The results are stored in "results" folder.

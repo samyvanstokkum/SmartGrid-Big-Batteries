@@ -1,33 +1,31 @@
 from operator import itemgetter
 from math import sqrt
 import matplotlib.pyplot as plt
-from random import choice, sample, shuffle
+from random import choice
 from node import Node
-import numpy as np
-import random
-from sklearn.cluster import KMeans
 
 
-def get_houses_to_batteries_distances(district, batteries, district_nr):
-    """Get all distances to all batteries for each house and pair them."""
-    houses_to_batteries_distances = []
+def get_houses_to_batteries_distances(district, batteries):
+    houses_to_batteries_distances = {}
     for house in district:
-        distances = []
+        houses_to_batteries_distances[house] = []
+
         for battery in batteries:
-            distances.append(abs(battery.x - house.x) + abs(battery.y - house.y))
-        houses_to_batteries_distances.append((house, distances))
-    houses_to_batteries_distances = sorted(houses_to_batteries_distances, 
-                                key=lambda item: sum(item[1]), reverse=True)
-    if district_nr != 1:                
-        sample_items = sample(houses_to_batteries_distances, 5)
-        for item in sample_items:
-            houses_to_batteries_distances.remove(item)
-            houses_to_batteries_distances.append(item)
+            houses_to_batteries_distances[house].append(
+                abs(battery.x-house.x) + abs(battery.y - house.y)
+            )
+    houses_to_batteries_distances = {house: distance for house, distance in 
+        sorted(houses_to_batteries_distances.items(), key=lambda item: sum(item[1]), reverse=True)
+        }
     
+    # house, distances = choice(tuple(houses_to_batteries_distances.items()))
+    # print(house)
+    # del houses_to_batteries_distances[house]
+    # houses_to_batteries_distances[house] = distances
+
     return houses_to_batteries_distances
 
 def get_house_to_batteries_distances(distances):
-    """Get distances to all batteries for a given house."""
     house_to_batteries_distances = {}
     for battery_nr, distance in enumerate(distances, 1):
         house_to_batteries_distances[battery_nr] = distance
@@ -35,17 +33,9 @@ def get_house_to_batteries_distances(distances):
     return house_to_batteries_distances
 
 def get_coordinates(node1, node2):
-    """Create a coordinate path from one node to the other, 
-    with only one corner point.
-    """
-
     return ([node1.x, node1.x, node2.x], [node1.y, node2.y, node2.y])
 
 def get_node_coordinates(path):
-    """Create a coordinate path from one node to the other, 
-    for each node on the path.
-    """
-
     x_co = []
     y_co = []
     for node in path:
@@ -54,7 +44,6 @@ def get_node_coordinates(path):
     return (x_co, y_co)
 
 def get_neighbours(x1, y1):
-    """Get all neighbours for a given point on the grid."""
     DISTRICT_SIZE = 51
     neighbours = []
     feasible_points = list(range(DISTRICT_SIZE))
@@ -72,16 +61,22 @@ def get_neighbours(x1, y1):
 
     return neighbours
 
-def pathfinder(start, target):
-    """Create a path between to points using a Eucilian distance 
-    heuristic.
-    """
+def locate_mins(open_set):
+    _, h = min(open_set.items(), key=itemgetter(1))
+    all_mins = []
+    for node, cost in open_set.items():
+        if cost == h:
+            all_mins.append((node, cost))
+    return all_mins
 
+def pathfinder(start, target):
     path = []
-    open_set = {start: sqrt((start.x - target.x)**2 + (start.y - target.y)**2) } 
-    closed_set = {} 
+    open_set = {start: sqrt((start.x - target.x)**2 + (start.y - target.y)**2) } # nodes to be evaluated # h = distance from end node
+    closed_set = {} # nodes already evaluated
     while True:
         current, h = min(open_set.items(), key=itemgetter(1))
+        # all_options = locate_mins(open_set)
+        # current, h = choice(all_options)
         path.append(current)
         del open_set[current]
         closed_set[current] = h
@@ -95,64 +90,21 @@ def pathfinder(start, target):
                 continue
 
             if neighbour not in open_set.keys():
-                open_set[neighbour] = sqrt((neighbour.x - target.x)**2 + 
-                                            (neighbour.y - target.y)**2)
+                open_set[neighbour] = sqrt((neighbour.x - target.x)**2 + (neighbour.y - target.y)**2)
                 
 def get_manhattan_distance(point1, point2):
-    """Get the manhattan distances between two points."""
     return abs(point1.x - point2.x) + abs(point1.y - point2.y)
 
 def swap(potential_house, potential_battery,chosen_house, chosen_battery):
-    """Swap two houses with each other and allocate to their new battery."""
     potential_battery.remove_house(potential_house)
     chosen_battery.remove_house(chosen_house)
     chosen_battery.add_house(potential_house)
     potential_battery.add_house(chosen_house)
 
 def reverse_swap(potential_house, potential_battery,chosen_house, chosen_battery):
-    """Swap two houses with each other and allocate to their new battery.
-    In doing so, reverse the initial swap."""
 
     potential_battery.remove_house(chosen_house)
     chosen_battery.remove_house(potential_house)
     chosen_battery.add_house(chosen_house)
     potential_battery.add_house(potential_house)
 
-def get_clusters(district, batteries):
-    points = []
-    for house in district:
-        coordinate = [house.x, house.y]
-        points.append(coordinate)
-    points = np.array(points)
-
-    # Create a kmeans object
-    kmeans = KMeans(n_clusters=len(batteries))
-
-    # Fit the kmeans object to the dataset
-    labels = kmeans.fit_predict(points)
-
-    clusters = kmeans.cluster_centers_
-    # clusters.astype(int)
-
-    return labels, points, clusters
-
-
-def get_random_batteries(district):
-    # Calculate total battery capacity needed
-    total_usage = 0
-    for house in district:
-        total_usage += house.power
-    # Possible battery types
-    battery_types = {"PowerStar": {"capacity": 450, "price": 900}, "Imerse-II": {
-        "capacity": 900, "price": 900}, "Imerse-III": {"capacity": 1800, "price": 1800}}
-    # Choose a random battery
-    battery = random.choice(list(battery_types.items()))
-    batteries = []
-    # Choose random battery till capacity exceeds total district usage
-    while total_usage >= 0:
-        batteries.append(battery)
-        # Subtract capacity of added battery from total usage
-        total_usage -= battery[1]['capacity']
-        # Choose new randopm battery
-        battery = random.choice(list(battery_types.items()))
-    return batteries
