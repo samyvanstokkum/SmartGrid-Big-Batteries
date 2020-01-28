@@ -1,5 +1,5 @@
 # Smart Grid
- > More and more people are starting to generate their own energy. Often times, they generate more than they can use. The surplus could > be sold back to the energy supplier, however the infrastucture is not build for that. To manage this, batteries should be placed to > store the leftover energy. 
+ > More and more people are starting to generate their own energy. Often times, they generate more than they can use. The surplus could be sold back to the energy supplier, however the infrastucture is not build for that. To manage this, batteries should be placed to store the leftover energy. 
 
  > To handle this, we are tasked to find an optimum configuration by assigning houses to batteries. 
  > In doing so, we explored the case by finding different ways to construct allocations. In this file, figures 
