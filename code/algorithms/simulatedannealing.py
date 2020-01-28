@@ -40,6 +40,9 @@ class SimulatedAnnealing():
             iterations = floor(log(1/self.temp)/log(1 - self.cooling_rate))
 
         for i in range(iterations):
+            progress = (i/iterations)*100
+            if i % 20 == 0:
+                print(f"Progress: {progress}%")
             if i == 0:
                 self.get_costs()
                 best_costs = copy.deepcopy(self.all_costs[0])

@@ -50,8 +50,19 @@ python main.py
 > Figure 2: "District 1; with random and Simulated Annealing
 ![D1_random_none](results/random_1_simulated_annealing.png)
 
-> Figure 3: "District 1; with cluster and Simulated Annealing, Shared Lines and Advanced options"
+> Figure 3: "District 1; with greedy and HillClimber Steepest Ascent"
+
 > 3a. Costs
-![D1_cluster_shared_SA_Advanced_costs](results/1_simulated_annealing.png)
+![D1_greedy_shared_HC_Steepest_costs](results/steepest_1_hillclimber.png)
+
 > 3b. Grid
+![D1_greedy_shared_HC_Steepest_grid](results/greedy_1_hillclimber.png)
+
+
+> Figure 4: "District 1; with cluster and Simulated Annealing, Shared Lines and Advanced options"
+
+> 4a. Costs
+![D1_cluster_shared_SA_Advanced_costs](results/1_simulated_annealing.png)
+
+> 4b. Grid
 ![D1_cluster_shared_SA_Advanced_grid](results/cluster_1_simulated_annealing.png)
