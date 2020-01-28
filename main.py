@@ -31,6 +31,7 @@ def main():
     initialization_options = ["greedy", "random", "cluster"]
     optimization_options = ["none", "hillclimber","simulated annealing"]
     yes_no = ["yes", "no"]
+    #context?
 
     # welcome user
     print("\nWelcome to SmartGrid\n")
