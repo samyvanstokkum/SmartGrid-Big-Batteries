@@ -1,8 +1,11 @@
-
 from prim import Prim
 
+
 def get_output_shared(config1):
-    """ TODO """
+    """
+    TODO 
+    """
+
     prim = Prim(config1.batteries)
     big_list = []
     for j, mst in enumerate(prim.mst_container):
@@ -23,7 +26,7 @@ def get_output_shared(config1):
                 if (house.x, house.y) == (branch.end_x, branch.end_y):
                     output = house.power
                     break
-            house_info = { 
+            house_info = {
                 "locatie": f"{branch.end_x},{branch.end_y}",
                 "output": f"{output}",
                 "kabels": kabels
@@ -33,8 +36,12 @@ def get_output_shared(config1):
 
     return big_list
 
+
 def get_output(batteries):
-    """TODO"""
+    """
+    TODO
+    """
+
     # make structure for batteries dicts
     output = []
 
@@ -50,9 +57,9 @@ def get_output(batteries):
             house_info["output"] = house.power
             house_info["kabels"] = []
 
-            # append kabels 
-            x1= house.x
-            x2 =battery.x
+            # append kabels
+            x1 = house.x
+            x2 = battery.x
             y1 = house.y
             y2 = battery.y
 
@@ -62,7 +69,7 @@ def get_output(batteries):
                 while node != x2:
                     coordinate = f"({node},{y1})"
                     house_info["kabels"].append(coordinate)
-                    node+=1
+                    node += 1
                 coordinate = f"({node},{y1})"
                 house_info["kabels"].append(coordinate)
             else:
@@ -70,7 +77,7 @@ def get_output(batteries):
                 while node != x2:
                     coordinate = f"({node},{y1})"
                     house_info["kabels"].append(coordinate)
-                    node-=1
+                    node -= 1
                 coordinate = f"({node},{y1})"
                 house_info["kabels"].append(coordinate)
             # part2: from mid_point to battery
@@ -80,7 +87,7 @@ def get_output(batteries):
                 while node != y2:
                     coordinate = f"({x2},{node})"
                     house_info["kabels"].append(coordinate)
-                    node+=1
+                    node += 1
                 coordinate = f"({x2},{node})"
                 house_info["kabels"].append(coordinate)
             else:
@@ -88,7 +95,7 @@ def get_output(batteries):
                 while node != y2:
                     coordinate = f"({x2},{node})"
                     house_info["kabels"].append(coordinate)
-                    node-=1
+                    node -= 1
                 coordinate = f"({x2},{node})"
                 house_info["kabels"].append(coordinate)
 
@@ -96,5 +103,5 @@ def get_output(batteries):
             battery_info["huizen"].append(house_info)
 
         output.append(battery_info)
-    
+
     return output
