@@ -44,4 +44,5 @@ python main.py
 
 ### Figures
 
-![D1_cluster_shared_SA_Advanced]('results/1_simulated_annealing.png')
+![D1_cluster_shared_SA_Advanced_costs](results/1_simulated_annealing.png)
+![D1_cluster_shared_SA_Advanced_grid](results/cluster_1_simulated_annealing.png)
