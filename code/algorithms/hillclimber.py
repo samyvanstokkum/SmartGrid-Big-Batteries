@@ -113,14 +113,14 @@ class HillClimber():
         """Plot the cost progression given the optimazation type and
         district number. Save the figure into the results folder."""
 
-            figure_name = f"{self.variant}_{district_nr}_{optimization}"
+        figure_name = f"{self.variant}_{district_nr}_{optimization}"
 
-            plt.figure()
-            plt.plot(self.all_costs)
-            plt.xlabel("iterations")
-            plt.ylabel("costs")
-            plt.title(f"minimum costs:{min(self.all_costs)}")
-            plt.savefig(results_directory + figure_name)
-            plt.show()
+        plt.figure()
+        plt.plot(self.all_costs)
+        plt.xlabel("iterations")
+        plt.ylabel("costs")
+        plt.title(f"minimum costs:{min(self.all_costs)}")
+        plt.savefig(results_directory + figure_name)
+        plt.show()
         
 

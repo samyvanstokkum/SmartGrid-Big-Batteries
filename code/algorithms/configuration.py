@@ -289,7 +289,7 @@ class Configuration():
         """Return True if given allocation is feasible, 
         False otherwise."""
 
-        capacity []
+        capacity = []
         nrs = 0
         for battery in self.batteries:
             nrs += len(battery.houses)
