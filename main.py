@@ -20,26 +20,20 @@ import json
 
 def main():
     
-    # global variables 
-    HC_ITERATIONS = 1000
-    TEMP = 102
-    COOLING_RATE = 0.03
-    SA_SCHEME = "exp"
-
     # parameters from which the user can choose 
-    districts = ["1","2","3"]
-    initialization_options = ["greedy", "random", "cluster"]
-    optimization_options = ["none", "hillclimber","simulated annealing"]
-    yes_no = ["yes", "no"]
-    #context?
+    context = {
+        "districts": ["1","2","3"],
+        "initialization_options": ["greedy", "random", "cluster"],
+        "optimization_options": ["none", "hillclimber","simulated annealing"],
+        "bools": ["yes", "no"]
+    }
 
     # welcome user
     print("\nWelcome to SmartGrid\n")
     
     # let user choose which parameters to use
-    initialization, district, share_grid, optimization, optimization_type, advanced = get_user_input(initialization_options, districts, yes_no, optimization_options)
-
-
+    initialization, district, share_grid, optimization, optimization_type, advanced = get_user_input(context)
+    
     # initial configuration
     config1 = Configuration(initialization, district, share_grid, advanced)
 
@@ -49,7 +43,7 @@ def main():
     
     elif optimization == "hillclimber":
         # create HC object with current parameters
-        HC = HillClimber(config1.batteries, optimization_type, HC_ITERATIONS, share_grid)
+        HC = HillClimber(config1.batteries, optimization_type, share_grid)
 
         # generate figure with the change in costs over all iterations
         HC.plot_costs(results_directory, optimization, config1.district_nr)
@@ -60,7 +54,7 @@ def main():
 
     else: # optimization == simulated annealing
         # create SA object with current parameters
-        SA = SimulatedAnnealing(config1.batteries, share_grid, TEMP, COOLING_RATE, SA_SCHEME)
+        SA = SimulatedAnnealing(config1.batteries, share_grid)
         
         # generate figure with the change in costs over all iterations
         SA.plot_costs(results_directory, optimization, config1.district_nr)
@@ -75,7 +69,7 @@ def main():
         output = get_output_shared(config1)
     
     # print output
-    # print(json.dumps(output, indent=4))
+    print(json.dumps(output, indent=4))
 
 
 if __name__ == "__main__":

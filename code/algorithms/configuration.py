@@ -246,7 +246,8 @@ class Configuration():
             plt.plot(battery.x, battery.y, 'H', color=colors[battery.id -1])
             for house in battery.houses:
                 plt.plot(house.x, house.y, 'k*')
-
+                
+        costs = 0
         if self.share_grid == False:
             self.get_routes() 
             i = 0
@@ -255,20 +256,24 @@ class Configuration():
                     plt.plot(x, y, colors[i])
                 i += 1
             
-            costs = 0
             for battery in self.batteries:
                 for house in battery.houses:
                     costs += (abs(house.x - battery.x) + abs(house.y - battery.y)) * 9
+                costs += battery.costs
             plt.title(f"Total costs:{costs}")
 
         else:
             i = 0
             prim = Prim(self.batteries)
+
+            for battery in self.batteries:
+                costs += battery.costs
+
             for mst in prim.mst_container:
                 for branch in mst.keys():
                     plt.plot(branch.path[0], branch.path[1], colors[i])
                 i += 1
-            plt.title(f"Total costs: {prim.costs}")
+            plt.title(f"Total costs: {prim.costs + costs}")
             
         plt.xlim(-2, 55)
         plt.ylim(-2, 55)

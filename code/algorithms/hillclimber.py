@@ -13,7 +13,7 @@ class HillClimber():
     Plotting the results is also possible.
     """
 
-    def __init__(self, batteries, variant, iterations, share_grid):
+    def __init__(self, batteries, variant, share_grid, iterations = 10):
         self.batteries = batteries
         self.variant = variant
         self.iterations = iterations
@@ -59,7 +59,12 @@ class HillClimber():
                             chosen_battery)
                         
                         prim = Prim(self.batteries)
-                        new_costs = prim.costs
+                        
+                        battery_costs = 0
+                        for battery in self.batteries:
+                            battery_costs += battery.costs
+
+                        new_costs = prim.costs + battery_costs 
                         cost_difference = old_costs - new_costs
                     
                         reverse_swap(potential_house, 
@@ -102,12 +107,16 @@ class HillClimber():
             for battery in self.batteries:
                 for house in battery.houses:
                     costs += (abs(house.x - battery.x) + abs(house.y - battery.y)) * 9
+                # costs += battery.costs
             
             self.all_costs.append(costs)
 
         else:
             prim = Prim(self.batteries)
-            self.all_costs.append(prim.costs)
+            for battery in self.batteries:
+                costs += battery.costs
+
+            self.all_costs.append(prim.costs + costs)
 
     def plot_costs(self, results_directory, optimization, district_nr):
         """Plot the cost progression given the optimazation type and

@@ -33,7 +33,7 @@ class Prim():
             houses = copy.deepcopy(battery.houses)
 
             for house in houses:
-                distance = get_manhattan_distance(house, battery)
+                distance = get_distance(house, battery)
                 tree[battery][house] = distance
             
             least_distance = {}
@@ -58,12 +58,12 @@ class Prim():
                 for node in new_nodes:
                     tree[node] = {}
                     for house in houses:
-                        distance = get_manhattan_distance(node, house)
+                        distance = get_distance(node, house)
                         tree[node][house] = distance
                 
                 tree[new_vertice] = {}
                 for house in houses:
-                    distance = get_manhattan_distance(new_vertice, house)
+                    distance = get_distance(new_vertice, house)
                     tree[new_vertice][house] = distance
             
             self.mst_container.append(mst)

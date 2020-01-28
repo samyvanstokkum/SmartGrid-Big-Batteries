@@ -1,31 +1,27 @@
-def get_user_input(initialization_options, districts, yes_no, optimization_options):
-    """" Ask user for input untill one of the given options is chosen"""
+def get_user_input(context):
+    """" Prompt user for input untill one of the given options is chosen"""
     
-    # define variables 
     hillclimber_types = ["stochastic", "steepest"]
     optimization_type = []
 
     # get initialization type from user
     initialization = input("Initialization type (greedy/random/cluster): ").lower()
 
-    # keep prompting untull one of the options is chosen
-    while initialization not in initialization_options:
+    while initialization not in context["initialization_options"]:
         print("please try again")
         initialization = input("Initialization type (greedy/random/cluster): ").lower()
 
     # get discrict number type from user
     district = input("District number (1/2/3): ")    
 
-    # keep prompting untull one of the options is chosen
-    while district not in districts:
+    while district not in context["districts"]:
         print("please try again")
         district = input("District number (1/2/3): ") 
 
     # user can choose whether or not houses can share gridlines
     share_grid = input("Can houses share gridlines? use Prim's algorithm if so (yes/no): ").lower()
 
-    # keep prompting untull one of the options is chosen
-    while share_grid not in yes_no:
+    while share_grid not in context["bools"]:
         print("please try again")
         share_grid = input("Share grid (yes/no): ").lower()
     
@@ -37,8 +33,7 @@ def get_user_input(initialization_options, districts, yes_no, optimization_optio
     # ask user for the optimization type 
     optimization = input("Optimization type (none/hillclimber/simulated annealing): ").lower()
 
-    # keep prompting untull one of the options is chosen
-    while optimization not in optimization_options:
+    while optimization not in context["optimization_options"]:
         print("please try again")
         optimization = input("Algorithm type (none/hillclimber/simulated annealing): ").lower()
 
@@ -46,7 +41,6 @@ def get_user_input(initialization_options, districts, yes_no, optimization_optio
     if optimization == "hillclimber":
         optimization_type = input("Hillclimber type (stochastic/steepest): ").lower()
 
-        # keep prompting untull one of the options is chosen
         while optimization_type not in hillclimber_types:
             print("please try again")
             optimization_type = input("Hillclimber type (stochastic/steepest): ").lower()
@@ -54,8 +48,7 @@ def get_user_input(initialization_options, districts, yes_no, optimization_optio
     # ask user for battery placement(advanced)
     advanced = input("Place batteries (yes/no): ").lower()
 
-    # keep prompting untull one of the options is chosen
-    while advanced not in yes_no:
+    while advanced not in context["bools"]:
         print("please try again")
         share_grid = input("Place batteries (yes/no): ").lower()
     

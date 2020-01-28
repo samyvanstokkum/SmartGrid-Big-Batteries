@@ -16,7 +16,7 @@ class SimulatedAnnealing():
     will be found.
     """
 
-    def __init__(self, batteries, share_grid, temp = 100, cooling_rate = 0.03, scheme = "linear"):
+    def __init__(self, batteries, share_grid, temp = 100, cooling_rate = 0.03, scheme = "exp"):
         self.batteries = batteries
         self.share_grid = share_grid 
         self.temp = temp
@@ -66,12 +66,18 @@ class SimulatedAnnealing():
             for battery in self.batteries:
                 for house in battery.houses:
                     costs += (abs(house.x - battery.x) + abs(house.y - battery.y)) * 9
+                
+                costs += battery.costs
             
             self.all_costs.append(costs)
 
         else:
             prim = Prim(self.batteries)
-            self.all_costs.append(prim.costs)
+
+            for battery in self.batteries:
+                costs += battery.costs
+
+            self.all_costs.append(prim.costs + costs)
 
     def plot_costs(self,results_directory, optimization, district_nr):
         """Plot the cost progression given the optimazation type and
@@ -107,15 +113,15 @@ class SimulatedAnnealing():
                 chosen_capacity = chosen_battery.capacity + chosen_house.power
                 potential_capacity = potential_battery.capacity + potential_house.power
 
-                if potential_house.power < capacity and \
+                if potential_house.power < chosen_capacity and \
                     chosen_house.power < potential_capacity:
                     
                     if self.share_grid == False:
-                        potential_distance = get_manhattan_distance(potential_house, potential_battery) + \
-                            get_manhattan_distance(chosen_house, chosen_battery)
+                        potential_distance = get_distance(potential_house, potential_battery) + \
+                            get_distance(chosen_house, chosen_battery)
 
-                        new_distance = get_manhattan_distance(chosen_house, potential_battery) + \
-                            get_manhattan_distance(potential_house, chosen_battery)
+                        new_distance = get_distance(chosen_house, potential_battery) + \
+                            get_distance(potential_house, chosen_battery)
 
                         cost_difference = potential_distance - new_distance
                     
@@ -123,7 +129,12 @@ class SimulatedAnnealing():
                         swap(potential_house, potential_battery, chosen_house, chosen_battery)
 
                         prim = Prim(self.batteries)
-                        new_costs = prim.costs
+                        
+                        battery_costs = 0
+                        for battery in self.batteries:
+                            battery_costs += battery.costs
+
+                        new_costs = prim.costs + battery_costs
                         cost_difference = old_costs - new_costs
 
                         reverse_swap(potential_house, potential_battery, chosen_house, chosen_battery)
