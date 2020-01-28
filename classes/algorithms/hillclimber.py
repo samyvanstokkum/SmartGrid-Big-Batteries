@@ -99,12 +99,15 @@ class HillClimber():
             prim = Prim(self.batteries)
             self.all_costs.append(prim.costs)
 
-    def plot_costs(self):
+    def plot_costs(self, results_directory, optimization, district_nr):
+            save_name_grid = f"{self.variant}_{district_nr}_{optimization}"
+
             plt.figure()
             plt.plot(self.all_costs)
             plt.xlabel("iterations")
             plt.ylabel("costs")
             plt.title(f"minimum costs:{min(self.all_costs)}")
+            plt.savefig(results_directory + save_name_grid)
             plt.show()
         
 

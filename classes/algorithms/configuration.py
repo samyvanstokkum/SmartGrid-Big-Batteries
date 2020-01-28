@@ -67,7 +67,6 @@ class Configuration():
                     nrs = 0
                     for battery in self.batteries:
                         nrs += len(battery.houses)
-                    print(nrs)
                     if nrs == 150:
                         print("Found allocation")
                         break
@@ -136,7 +135,6 @@ class Configuration():
                             self.update_configuration(house, distances)
                             break
                         else:
-                            print("opnieuw")
                             return 1
                         
     def update_configuration(self, house, distances):
@@ -159,8 +157,6 @@ class Configuration():
                 desired_battery = self.batteries[desired_battery_nr - 1]
                 del house_to_batteries_distances[desired_battery_nr] 
             except:
-                print("ojeej")
-                print("")
                 exit
                
             for house in desired_battery.houses:
@@ -182,8 +178,10 @@ class Configuration():
     def cluster_algo(self):
         pass
 
-    def make_plot(self):
+    def make_plot(self, results_directory, optimization):
+        save_name_grid = f"{self.type}_{self.district_nr}_{optimization}"
         colors = ['r', 'b', 'k', 'g', 'm']
+        
         plt.figure()
         for battery in self.batteries:
             plt.plot(battery.x, battery.y, 'H', color=colors[battery.id -1])
@@ -203,7 +201,6 @@ class Configuration():
             for battery in self.batteries:
                 for house in battery.houses:
                     costs += (abs(house.x - battery.x) + abs(house.y - battery.y)) * 9
-                    print(house)
             plt.title(f"Total costs:{costs}")
 
         else:
@@ -218,6 +215,7 @@ class Configuration():
 
         plt.xlim(-2, 55)
         plt.ylim(-2, 55)
+        plt.savefig(results_directory + save_name_grid)
         plt.show()
 
     def get_routes(self, share_grid = False):

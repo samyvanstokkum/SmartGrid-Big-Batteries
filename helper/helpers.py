@@ -2,25 +2,11 @@ from operator import itemgetter
 from math import sqrt
 import matplotlib.pyplot as plt
 from random import choice, sample, shuffle
-import json
 from node import Node
-
 
 
 def get_houses_to_batteries_distances(district, batteries, district_nr):
     """Get all distances to all batteries for each house and pair them."""
-    # houses_to_batteries_distances = {}
-    # for house in district:
-    #     houses_to_batteries_distances[house] = []
-
-    #     for battery in batteries:
-    #         houses_to_batteries_distances[house].append(
-    #             abs(battery.x-house.x) + abs(battery.y - house.y)
-    #         )
-    # houses_to_batteries_distances = {house: distance for house, distance in 
-    #     sorted(houses_to_batteries_distances.items(), key=lambda item: sum(item[1]), reverse=True)
-    #     }
-    
     houses_to_batteries_distances = []
     for house in district:
         distances = []
@@ -36,31 +22,6 @@ def get_houses_to_batteries_distances(district, batteries, district_nr):
             houses_to_batteries_distances.append(item)
     
     return houses_to_batteries_distances
-
-def get_houses_with_same_distance(houses_to_batteries_distances):
-    houses_with_same_distance = {}
-    for house, distances in houses_to_batteries_distances:
-        try:
-            houses_with_same_distance[sum(distances)].append(house)
-        except:
-            houses_with_same_distance[sum(distances)] = [house]
-        
-    same_distance_houses = [houses for houses in houses_with_same_distance.values() 
-                            if len(houses) > 1]  
-
-    return same_distance_houses
-
-def get_house_pair_to_swap(houses_with_same_distance, houses_to_batteries_distances):
-    i = choice(range(len(houses_with_same_distance)))
-    house1, house2 = sample(houses_with_same_distance[i], 2)
-    for pair in houses_to_batteries_distances:
-        if pair[0] == house1:
-            item1 = pair
-        if pair[0] == house2:
-            item2 = pair
-
-    return (item1, item2)
-
 
 def get_house_to_batteries_distances(distances):
     """Get distances to all batteries for a given house."""
@@ -107,14 +68,6 @@ def get_neighbours(x1, y1):
             neighbours.append(node)
 
     return neighbours
-
-def locate_mins(open_set):
-    _, h = min(open_set.items(), key=itemgetter(1))
-    all_mins = []
-    for node, cost in open_set.items():
-        if cost == h:
-            all_mins.append((node, cost))
-    return all_mins
 
 def pathfinder(start, target):
     """Create a path between to points using a Eucilian distance 

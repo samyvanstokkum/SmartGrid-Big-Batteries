@@ -69,12 +69,15 @@ class SimulatedAnnealing():
             prim = Prim(self.batteries)
             self.all_costs.append(prim.costs)
 
-    def plot_costs(self):
+    def plot_costs(self,results_directory, optimization, district_nr):
+        save_name_grid = f"{district_nr}_{optimization}"
         plt.figure()
         plt.plot(self.all_costs)
         plt.xlabel("iterations")
         plt.title(f"Begin costs: {self.all_costs[0]} \n minimum costs: {min(self.all_costs)}\n SA")
         plt.ylabel("costs")
+        plt.savefig(results_directory + save_name_grid)
+
         plt.show()
 
     def SA(self):
