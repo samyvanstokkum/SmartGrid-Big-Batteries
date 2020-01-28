@@ -61,14 +61,14 @@ def main():
         # update batteries in config1 and plot results
         config1.batteries = SA.batteries
         config1.make_plot(results_directory, optimization)
+        return 1
 
     if not share_grid:
         output = get_output(config1.batteries)
     else:
         output = get_output_shared(config1)
 
-    # print output
-    print(json.dumps(output, indent=4))
+    # print(json.dumps(output, indent=4))
 
 
 if __name__ == "__main__":

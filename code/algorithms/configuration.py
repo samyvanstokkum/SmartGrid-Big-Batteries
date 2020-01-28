@@ -130,17 +130,18 @@ class Configuration():
                 break
 
     def cluster_algo(self):
-        """
-        Use K-means to group houses into clusters. These clusters are assigned to the optimal battery.
-        The houses in the clusters are sorted by the sum of the distance to the suboptimal batteries.
-        The algorithms keeps running untill all houses are assigned to a battery.
+        """Use K-means to group houses into clusters. 
+        
+        These clusters are assigned to the optimal battery.
+        The houses in the clusters are sorted by the sum of the 
+        distance to the suboptimal batteries. The algorithms keeps 
+        running untill all houses are assigned to a battery.
         """
 
         while True:
             labels, clusters = get_clusters(
                 self.district, self.batteries)
 
-            # get the clostest batteries to a cluster centroid
             distance_cluster_to_batteries = {}
 
             for cluster in range(len(self.batteries)):
@@ -149,21 +150,17 @@ class Configuration():
                     distance = get_distance_cluster(clusters[cluster], battery)
                     distance_cluster_to_batteries[cluster][battery] = distance
 
-                # sort the batteries distances of a cluster from closest to furthest
                 distance_cluster_to_batteries[cluster] = {k: v for k, v in sorted(
                     distance_cluster_to_batteries[cluster].items(), key=lambda item: item[1])}
 
-                # filter the houses to contain only the house of the cluster
                 houses_in_cluster = [x for x, y in zip(
                     self.district, labels) if y == cluster]
 
                 suboptimal_battery_distance = {}
 
-                # select battery closest to cluster (optimal battery)
                 optimal_battery = list(
                     distance_cluster_to_batteries[cluster].keys())[0]
 
-                # calculate distance from house to battery
                 for house in houses_in_cluster:
                     suboptimal_battery_distance[house] = {}
                     total_distance = 0
@@ -179,15 +176,12 @@ class Configuration():
                 for house in houses_in_cluster_sorted:
                     index = 0
                     while True:
-                            # Select battery closest to district
                         battery = list(
                             distance_cluster_to_batteries[cluster].keys())[index]
-                        # check if capacity fits the usage
                         if battery.capacity - house.power >= 0:
                             battery.add_house(house)
                             break
                         else:
-                            # select next best battery
                             index += 1
                             if index > len(self.batteries)-1:
                                 break
