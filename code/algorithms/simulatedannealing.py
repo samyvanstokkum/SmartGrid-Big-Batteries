@@ -103,12 +103,12 @@ class SimulatedAnnealing():
         plt.show()
 
     def anneal(self):
-        """
-        Find possible swaps between a randomly chosen house 
-        and all other houses. If there are multiple swaps possible, 
-        make the best swap if it is an improvement or accept a 
-        worse swap depending on an acceptance probability. This
-        in turns depends on the temperature at that time.
+        """Find possible swaps between a randomly chosen house and other houses. 
+        
+        If there are multiple swaps possible, make the best swap if it is an 
+        improvement or accept a worse swap depending on an acceptance probability. 
+        This in turns depends on the temperature at that time, which decreases
+        after each iteration using a cooling scheme.
         """
 
         chosen_battery = random.choice(self.batteries)

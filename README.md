@@ -44,5 +44,14 @@ python main.py
 
 ### Figures
 
+> Figure 1: "District 1; with greedy and no optimization"
+![D1_greedy_none](results/greedy_1_none.png)
+
+> Figure 2: "District 1; with random and Simulated Annealing
+![D1_random_none](results/random_1_simulated_annealing.png)
+
+> Figure 3: "District 1; with cluster and Simulated Annealing, Shared Lines and Advanced options"
+> 3a. Costs
 ![D1_cluster_shared_SA_Advanced_costs](results/1_simulated_annealing.png)
+> 3b. Grid
 ![D1_cluster_shared_SA_Advanced_grid](results/cluster_1_simulated_annealing.png)
