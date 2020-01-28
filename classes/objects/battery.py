@@ -6,6 +6,7 @@ class Battery:
         self.y = y
         self.capacity = capacity
         self.houses = []
+        self.nr_houses = len(self.houses)
 
     # add a house objecy to the battery
     def add_house(self, house):

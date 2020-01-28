@@ -45,7 +45,8 @@ class HillClimber():
                 chosen_battery_capacity = chosen_battery.capacity + chosen_house.power
 
                 # check if swap is possible capacity-wise
-                if potential_house.power < chosen_battery_capacity and chosen_house.power < potential_battery.capacity + potential_house.power:
+                if potential_house.power < chosen_battery_capacity and \
+                    chosen_house.power < potential_battery.capacity + potential_house.power:
                     
                     if self.share_grid == True:
                         # swap
@@ -59,8 +60,12 @@ class HillClimber():
                         reverse_swap(potential_house, potential_battery, chosen_house, chosen_battery)
                     
                     else: # share grid == False
-                        potential_distance = get_manhattan_distance(potential_house, potential_battery) + get_manhattan_distance(chosen_house, chosen_battery)
-                        new_distance = get_manhattan_distance(chosen_house, potential_battery) + get_manhattan_distance(potential_house, chosen_battery)
+                        potential_distance = get_manhattan_distance(potential_house, potential_battery) + \
+                            get_manhattan_distance(chosen_house, chosen_battery)
+
+                        new_distance = get_manhattan_distance(chosen_house, potential_battery) + \
+                            get_manhattan_distance(potential_house, chosen_battery)
+                        
                         cost_difference = potential_distance - new_distance
 
                     # save every option as tuple in a list

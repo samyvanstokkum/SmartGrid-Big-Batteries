@@ -7,7 +7,7 @@ import copy
 
 
 class SimulatedAnnealing():
-    def __init__(self, batteries, share_grid, temp = 102, cooling_rate = 10, scheme = "linear"):
+    def __init__(self, batteries, share_grid, temp = 100, cooling_rate = 0.03, scheme = "linear"):
         self.batteries = batteries
         self.share_grid = share_grid 
         self.temp = temp
@@ -31,29 +31,28 @@ class SimulatedAnnealing():
                 print(f"still running... {i}")
             # calculate costs of current iteration and perform SA
             
-            self.get_costs()
-            self.SA()
-           
+        
             # best_costs starts as costs from i = 0
             if i == 0:
+                self.get_costs()
                 best_costs = copy.deepcopy(self.all_costs[0])
                 best_option = copy.deepcopy(self.batteries)
 
-            # # check if cost from this i is better than best_cost option and update best_option
-            elif self.all_costs[-1] < best_costs:
+            self.SA()
+            self.get_costs()
+
+            # # check if cost from this i is better than best_cost option and update best_option   
+            if i > 0 and self.all_costs[-1] < best_costs:
                 best_option = copy.deepcopy(self.batteries)
                 best_costs = self.all_costs[-1]
 
             # update temperature
             if self.scheme == "linear":
                 self.temp = self.temp - self.cooling_rate
-            elif self.schema == "exp":
+            elif self.scheme == "exp":
                 self.temp *= 1 - self.cooling_rate
-            else:
-                pass
 
         self.batteries = best_option
-
 
     def get_costs(self):
         costs = 0
@@ -74,7 +73,7 @@ class SimulatedAnnealing():
         plt.figure()
         plt.plot(self.all_costs)
         plt.xlabel("iterations")
-        plt.title(min(self.all_costs))
+        plt.title(f"Begin costs: {self.all_costs[0]} \n minimum costs: {min(self.all_costs)}\n SA")
         plt.ylabel("costs")
         plt.show()
 
@@ -98,13 +97,18 @@ class SimulatedAnnealing():
             for potential_house in potential_battery.houses:
                 chosen_battery_cap = chosen_battery.capacity + chosen_house.power
 
+                # check = check_swap(potential_house, chosen_battery_cap, chosen_house, potential_battery)
                 # check if swap is possible capacity-wise
-                if potential_house.power < chosen_battery_cap and chosen_house.power < potential_battery.capacity + potential_house.power:
+
+                if potential_house.power < chosen_battery_cap and \
+                    chosen_house.power < potential_battery.capacity + potential_house.power:
                     
                     if self.share_grid == False:
                         # calculate current and new distance
-                        potential_distance = get_manhattan_distance(potential_house, potential_battery) + get_manhattan_distance(chosen_house, chosen_battery)
-                        new_distance = get_manhattan_distance(chosen_house, potential_battery) + get_manhattan_distance(potential_house, chosen_battery)
+                        potential_distance = get_manhattan_distance(potential_house, potential_battery) + \
+                            get_manhattan_distance(chosen_house, chosen_battery)
+                        new_distance = get_manhattan_distance(chosen_house, potential_battery) + \
+                            get_manhattan_distance(potential_house, chosen_battery)
                         cost_difference = potential_distance - new_distance
                     
                     else: # share grid == True

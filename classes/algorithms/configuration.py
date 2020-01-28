@@ -54,14 +54,32 @@ class Configuration():
             self.batteries.append(battery)
 
     def get_configuration(self):
+        """Get configuration depending on the type of configuration."""
+
         if self.type == "random":
             self.random_algo()
         elif self.type == "greedy":
-            self.greedy_algo()
+            if self.district_nr != 1:
+                while True:
+                    for battery in self.batteries:
+                        battery.restore()
+                    self.greedy_algo()
+                    nrs = 0
+                    for battery in self.batteries:
+                        nrs += len(battery.houses)
+                    print(nrs)
+                    if nrs == 150:
+                        print("Found allocation")
+                        break
+            else:
+                self.greedy_algo()
+            
         else: # if type = "cluster"
             self.cluster_algo()
         
     def random_algo(self):
+        """Randomly allocate 30 houses to the 5 batteries until solution is 
+        feasible. """
 
         HOUSES_PER_BATTERY = 30
         t = time.time()
@@ -88,27 +106,25 @@ class Configuration():
                     satisfing_constraints.append(True)
 
             if all(satisfing_constraints):
-                s = t - time.time()
+                s = abs(t - time.time())
                 print(f"Took {s} seconds to find solution")
                 break
       
     def greedy_algo(self):
+    
+        houses_to_batteries_distances = get_houses_to_batteries_distances(self.district, self.batteries, self.district_nr)
         
-        houses_to_batteries_distances = get_houses_to_batteries_distances(self.district, self.batteries)
-
-        for house, distances in houses_to_batteries_distances.items():
-            
+        # for house, distances in houses_to_batteries_distances.items():
+        for house, distances in houses_to_batteries_distances:
             house_to_batteries_distances = get_house_to_batteries_distances(distances)
 
             while True:
-                # select the route with the smallest distance from house to battery
-
+                
                 battery_nr = min(house_to_batteries_distances, key=house_to_batteries_distances.get)
                 battery = self.batteries[battery_nr - 1]
 
-                # check if capacity fits the power
                 if battery.capacity - house.power >= 0:
-                    battery.add_house(house) 
+                    battery.add_house(house)
                     break
 
                 else:
@@ -116,10 +132,15 @@ class Configuration():
                     del house_to_batteries_distances[battery_nr]
                     if not house_to_batteries_distances:
                         # now we know that no batteries have room for this house
-                        self.update_configuration(house, distances)
-                        break
-
+                        if self.district_nr == 1:
+                            self.update_configuration(house, distances)
+                            break
+                        else:
+                            print("opnieuw")
+                            return 1
+                        
     def update_configuration(self, house, distances):
+
         remaining_house = house
 
         remaining_capacity = {}
@@ -129,19 +150,19 @@ class Configuration():
         house_to_batteries_distances = get_house_to_batteries_distances(distances)
         
         max_capacity_battery_nr = max(remaining_capacity, key=remaining_capacity.get)
-        max_capacity_battery = self.batteries[max_capacity_battery_nr - 1]
+        max_capacity_battery = self.batteries[max_capacity_battery_nr - 1]       
 
         swap_options = []
         while not swap_options:
             try:
                 desired_battery_nr = min(house_to_batteries_distances, key=house_to_batteries_distances.get)
                 desired_battery = self.batteries[desired_battery_nr - 1]
-                del house_to_batteries_distances[desired_battery_nr] # TODO: MISSCHIEN EEN TRY-EXCEPT
+                del house_to_batteries_distances[desired_battery_nr] 
             except:
-                print("ojeej..")
-                return 1
-                
-
+                print("ojeej")
+                print("")
+                exit
+               
             for house in desired_battery.houses:
                 if house.power < remaining_capacity[max_capacity_battery_nr] and house.power + remaining_capacity[desired_battery_nr] > remaining_house.power:
                     # save these houses and the costs of swapping
@@ -182,6 +203,7 @@ class Configuration():
             for battery in self.batteries:
                 for house in battery.houses:
                     costs += (abs(house.x - battery.x) + abs(house.y - battery.y)) * 9
+                    print(house)
             plt.title(f"Total costs:{costs}")
 
         else:
