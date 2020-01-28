@@ -96,7 +96,7 @@ class SimulatedAnnealing():
         plt.plot(self.all_costs)
         plt.xlabel("iterations")
         plt.title(
-            f"Begin costs: {self.all_costs[0]} \n minimum costs: {min(self.all_costs)}\n SA")
+            f"Begin costs: {self.all_costs[0]} \n Minimum costs: {min(self.all_costs)}\n")
         plt.ylabel("costs")
         plt.savefig(results_directory + figure_name)
 
