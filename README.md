@@ -28,6 +28,11 @@ To run the code with the standard configuration use the instruction:
 ```
 python main.py
 ```
+After running main.py, you will be prompted for your desired configuration.
+You can choose between a random, greedy, and cluster algorithm for the initialization.
+For optimization you can choose between hillclimber (both stochastic and steepest descent), simulated annealing and no optimization.
+You can also decided if you want the cables to share a grid segment using prim's algorithm.
+Lastly, you can enable battery placement. This configures a placement with three new types of batteries.
 
 ## Authors
 
