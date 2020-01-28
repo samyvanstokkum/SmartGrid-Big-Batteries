@@ -67,6 +67,5 @@ python main.py
 > 4b. Grid
 ![D1_cluster_shared_SA_Advanced_grid](results/cluster_1_simulated_annealing.png)
 
-> Figure 5: "Exploration of Simulated Annealing parameters (temperatures and cooling rates). 
-Z-axis represents the costs."
+> Figure 5: "Exploration of Simulated Annealing parameters (costs are presented on the Z-axis)."
 ![D1_greedy_none](results/SA_parameters2_greedy.png)
