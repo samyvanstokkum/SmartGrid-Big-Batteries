@@ -1,18 +1,19 @@
 from prim import Prim
 
+
 def get_output_shared(config1):
-    """Generate output in desired format given a configuration.
-    
+    """
+    Generate output in desired format given a configuration.
     Take into account that grid lines can be shared.
     """
 
     prim = Prim(config1.batteries)
-    output = []
+    output_list = []
     for j, mst in enumerate(prim.mst_container):
         battery = config1.batteries[j]
-        battery_info = {
+        batterij = {
             "locatie": f"{battery.x},{battery.y}",
-            "capaciteit": f"{battery.real_capacity}",
+            "capaciteit": 1507.0,
             "huizen": []
         }
         for branch in mst.keys():
@@ -26,34 +27,35 @@ def get_output_shared(config1):
                 if (house.x, house.y) == (branch.end_x, branch.end_y):
                     output = house.power
                     break
-            house_info = { 
+            house_info = {
                 "locatie": f"{branch.end_x},{branch.end_y}",
                 "output": f"{output}",
                 "kabels": kabels
             }
-            battery_info["huizen"].append(house_info)
-        output.append(battery_info)
+            batterij["huizen"].append(house_info)
+        output_list.append(batterij)
 
-    return output
+    return output_list
+
 
 def get_output(batteries):
-    """Generate output in desired format given a configuration.
-    
+    """
+    Generate output in desired format given a configuration.
     Take into account that grid lines cannot be shared.
     """
 
-    output = []
+    output_list = []
     for battery in batteries:
         battery_info = {
             "locatie": f"{battery.x},{battery.y}",
-            "capaciteit": battery.real_capacity, 
+            "capaciteit": battery.real_capacity,
             "huizen": []
         }
 
         for house in battery.houses:
             house_info = {
                 "locatie": f"{house.x},{house.y}",
-                "output": house.power,
+                "output_list": house.power,
                 "kabels": []
             }
 
@@ -67,7 +69,7 @@ def get_output(batteries):
                 while node != x2:
                     coordinate = f"({node},{y1})"
                     house_info["kabels"].append(coordinate)
-                    node+=1
+                    node += 1
                 coordinate = f"({node},{y1})"
                 house_info["kabels"].append(coordinate)
             else:
@@ -84,7 +86,7 @@ def get_output(batteries):
                 while node != y2:
                     coordinate = f"({x2},{node})"
                     house_info["kabels"].append(coordinate)
-                    node+=1
+                    node += 1
                 coordinate = f"({x2},{node})"
                 house_info["kabels"].append(coordinate)
             else:
@@ -92,12 +94,12 @@ def get_output(batteries):
                 while node != y2:
                     coordinate = f"({x2},{node})"
                     house_info["kabels"].append(coordinate)
-                    node-=1
+                    node -= 1
                 coordinate = f"({x2},{node})"
                 house_info["kabels"].append(coordinate)
 
             battery_info["huizen"].append(house_info)
 
-        output.append(battery_info)
-    
-    return output
+        output_list.append(battery_info)
+
+    return output_list

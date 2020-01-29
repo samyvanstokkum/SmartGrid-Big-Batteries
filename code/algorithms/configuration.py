@@ -261,7 +261,7 @@ class Configuration():
                   'yellow', 'violet',
                   'tomato', 'turquoise',
                   'sienna', 'blue', 'pink',
-                  'teal', 'tan']
+                  'teal', 'tan', 'red', 'green']
 
         plt.figure()
         for battery in self.batteries:
