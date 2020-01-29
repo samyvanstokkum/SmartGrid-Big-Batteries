@@ -68,7 +68,7 @@ def main():
     else:
         output = get_output_shared(config1)
 
-    # print(json.dumps(output, indent=4))
+    print(json.dumps(output, indent=4))
 
 
 if __name__ == "__main__":
